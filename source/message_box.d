@@ -94,7 +94,7 @@ private bool showMessageBoxWindows(string message) {
 		import core.runtime;
 		import core.sys.windows.windows;
 		import std.utf : toUTFz;
-		MessageBox(NULL, toUTFz!(const(wchar)*)(message), "Error", MB_OK);
+		MessageBox(NULL, message.toUTFz!(const(wchar)*)(), "Error", MB_OK | MB_ICONERROR);
 		return true;
 	} else {
 		return false;
