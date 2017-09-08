@@ -75,13 +75,13 @@ private string[] programPaths(string[] program_names) {
 	return paths;
 }
 
-private bool showMessageBoxSDL(string message) {
+private bool showMessageBoxSDL(string title, string message) {
 	import std.string : toStringz;
 	import derelict.sdl2.sdl : DerelictSDL2, SDL_ShowSimpleMessageBox, SDL_MESSAGEBOX_ERROR;
 
 	// Try the SDL message box first
 	if (DerelictSDL2.isLoaded()) {
-		if (SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error".toStringz, message.toStringz, null) == 0) {
+		if (SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, title.toStringz, message.toStringz, null) == 0) {
 		}
 		return true;
 	}
@@ -89,25 +89,25 @@ private bool showMessageBoxSDL(string message) {
 	return false;
 }
 
-private bool showMessageBoxWindows(string message) {
+private bool showMessageBoxWindows(string title, string message) {
 	version (Windows) {
 		import core.runtime;
 		import core.sys.windows.windows;
 		import std.utf : toUTFz;
-		MessageBox(NULL, message.toUTFz!(const(wchar)*)(), "Error", MB_OK | MB_ICONERROR);
+		MessageBox(NULL, message.toUTFz!(const(wchar)*), title.toUTFz!(const(wchar)*), MB_OK | MB_ICONERROR);
 		return true;
 	} else {
 		return false;
 	}
 }
 
-private bool showMessageBoxZenity(string message) {
+private bool showMessageBoxZenity(string title, string message) {
 	import std.process : spawnProcess, wait;
 
 	// Show the message using Zenity
 	string[] paths = programPaths(["zenity"]);
 	if (paths.length > 0) {
-		auto pid = spawnProcess([paths[0], "--error", "--text=\"" ~ message ~ "\""]);
+		auto pid = spawnProcess([paths[0], "--error", "--title=" ~ title, "--text=" ~ message]);
 		int status = wait(pid);
 		return true;
 	}
@@ -115,21 +115,21 @@ private bool showMessageBoxZenity(string message) {
 	return false;
 }
 
-void showMessageBox(string message) {
+void showMessageBox(string title, string message) {
 	import std.stdio : stderr;
 
 	bool did_show = false;
 
 	if (! did_show) {
-		did_show = showMessageBoxSDL(message);
+		did_show = showMessageBoxSDL(title, message);
 	}
 
 	if (! did_show) {
-		did_show = showMessageBoxWindows(message);
+		did_show = showMessageBoxWindows(title, message);
 	}
 
 	if (! did_show) {
-		did_show = showMessageBoxZenity(message);
+		did_show = showMessageBoxZenity(title, message);
 	}
 
 	// Fall back to printing to stderr

@@ -12,7 +12,7 @@ int main() {
 
 	}
 
-	showMessageBox("Example text goes here ...");
+	showMessageBox("Go Boom", "Example text goes here ...");
 	stdout.writefln("Dialog ...");
 
 	return 0;
