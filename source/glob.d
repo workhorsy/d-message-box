@@ -15,6 +15,8 @@
    License along with the GNU C Library; if not, see
    <http://www.gnu.org/licenses/>.  */
 
+version (Windows) {} else {
+
 string[] glob(string pattern)
 {
     import std.string;
@@ -112,3 +114,4 @@ int glob (
 
 /* Free storage allocated in PGLOB by a previous `glob' call.  */
 void globfree (glob_t* __pglob);
+}

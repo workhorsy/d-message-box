@@ -10,7 +10,7 @@ module message_box;
 
 private string[] glob(string pattern) {
 	version (Windows) {
-		import std.file : dirEntries;
+		import std.file : dirEntries, SpanMode;
 		string[] retval;
 		foreach (entry; dirEntries("", pattern, SpanMode.breadth)) {
 			retval ~= entry;
@@ -95,9 +95,9 @@ private bool showMessageBoxWindows(string message) {
 		auto pid = spawnProcess(["./msg_box.exe", message]);
 		int status = wait(pid);
 		return true;
+	} else {
+		return false;
 	}
-
-	return false;
 }
 
 private bool showMessageBoxZenity(string message) {
