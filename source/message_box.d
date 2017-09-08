@@ -91,9 +91,9 @@ private bool showMessageBoxSDL(string message) {
 
 private bool showMessageBoxWindows(string message) {
 	version (Windows) {
-		import std.process : spawnProcess, wait;
-		auto pid = spawnProcess(["./msg_box.exe", message]);
-		int status = wait(pid);
+		import core.runtime;
+		import core.sys.windows.windows;
+		MessageBox(NULL, message, "Error", MB_OK);
 		return true;
 	} else {
 		return false;
