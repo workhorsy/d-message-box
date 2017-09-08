@@ -104,18 +104,19 @@ private bool showMessageBoxSDL(string title, string message, IconType icon) {
 }
 
 private bool showMessageBoxWindows(string title, string message, IconType icon) {
-	uint flags = 0;
-	final switch (icon) {
-		case IconType.None: flags = 0; break;
-		case IconType.Information: flags = MB_ICONINFORMATION; break;
-		case IconType.Error: flags = MB_ICONERROR; break;
-		case IconType.Warning: flags = MB_ICONWARNING; break;
-	}
-
 	version (Windows) {
 		import core.runtime;
 		import core.sys.windows.windows;
 		import std.utf : toUTFz;
+
+		int flags = 0;
+		final switch (icon) {
+			case IconType.None: flags = 0; break;
+			case IconType.Information: flags = MB_ICONINFORMATION; break;
+			case IconType.Error: flags = MB_ICONERROR; break;
+			case IconType.Warning: flags = MB_ICONWARNING; break;
+		}
+
 		MessageBox(NULL, message.toUTFz!(const(wchar)*), title.toUTFz!(const(wchar)*), MB_OK | flags);
 		return true;
 	} else {
