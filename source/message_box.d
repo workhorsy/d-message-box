@@ -6,7 +6,12 @@
 
 module message_box;
 
-
+enum IconType {
+	None,
+	Information,
+	Error,
+	Warning,
+}
 
 private string[] glob(string pattern) {
 	version (Windows) {
@@ -75,13 +80,22 @@ private string[] programPaths(string[] program_names) {
 	return paths;
 }
 
-private bool showMessageBoxSDL(string title, string message) {
+private bool showMessageBoxSDL(string title, string message, IconType icon) {
 	import std.string : toStringz;
-	import derelict.sdl2.sdl : DerelictSDL2, SDL_ShowSimpleMessageBox, SDL_MESSAGEBOX_ERROR;
+	import derelict.sdl2.sdl : DerelictSDL2, SDL_ShowSimpleMessageBox,
+		SDL_MESSAGEBOX_INFORMATION, SDL_MESSAGEBOX_ERROR, SDL_MESSAGEBOX_WARNING;
+
+	uint flags = 0;
+	final switch (icon) {
+		case IconType.None: flags = 0; break;
+		case IconType.Information: flags = SDL_MESSAGEBOX_INFORMATION; break;
+		case IconType.Error: flags = SDL_MESSAGEBOX_ERROR; break;
+		case IconType.Warning: flags = SDL_MESSAGEBOX_WARNING; break;
+	}
 
 	// Try the SDL message box first
 	if (DerelictSDL2.isLoaded()) {
-		if (SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, title.toStringz, message.toStringz, null) == 0) {
+		if (SDL_ShowSimpleMessageBox(flags, title.toStringz, message.toStringz, null) == 0) {
 		}
 		return true;
 	}
@@ -89,25 +103,42 @@ private bool showMessageBoxSDL(string title, string message) {
 	return false;
 }
 
-private bool showMessageBoxWindows(string title, string message) {
+private bool showMessageBoxWindows(string title, string message, IconType icon) {
+	uint flags = 0;
+	final switch (icon) {
+		case IconType.None: flags = 0; break;
+		case IconType.Information: flags = MB_ICONINFORMATION; break;
+		case IconType.Error: flags = MB_ICONERROR; break;
+		case IconType.Warning: flags = MB_ICONWARNING; break;
+	}
+
 	version (Windows) {
 		import core.runtime;
 		import core.sys.windows.windows;
 		import std.utf : toUTFz;
-		MessageBox(NULL, message.toUTFz!(const(wchar)*), title.toUTFz!(const(wchar)*), MB_OK | MB_ICONERROR);
+		MessageBox(NULL, message.toUTFz!(const(wchar)*), title.toUTFz!(const(wchar)*), MB_OK | flags);
 		return true;
 	} else {
 		return false;
 	}
 }
 
-private bool showMessageBoxZenity(string title, string message) {
+private bool showMessageBoxZenity(string title, string message, IconType icon) {
 	import std.process : spawnProcess, wait;
+
+	string flags = "";
+	final switch (icon) {
+		case IconType.None: flags = "--info"; break;
+		case IconType.Information: flags = "--info"; break;
+		case IconType.Error: flags = "--error"; break;
+		case IconType.Warning: flags = "--warning"; break;
+	}
 
 	// Show the message using Zenity
 	string[] paths = programPaths(["zenity"]);
 	if (paths.length > 0) {
-		auto pid = spawnProcess([paths[0], "--error", "--title=" ~ title, "--text=" ~ message]);
+		string[] args = [paths[0], flags, "--title=" ~ title, "--text=" ~ message];
+		auto pid = spawnProcess(args);
 		int status = wait(pid);
 		return true;
 	}
@@ -115,21 +146,21 @@ private bool showMessageBoxZenity(string title, string message) {
 	return false;
 }
 
-void showMessageBox(string title, string message) {
+void showMessageBox(string title, string message, IconType icon) {
 	import std.stdio : stderr;
 
 	bool did_show = false;
 
 	if (! did_show) {
-		did_show = showMessageBoxSDL(title, message);
+		did_show = showMessageBoxSDL(title, message, icon);
 	}
 
 	if (! did_show) {
-		did_show = showMessageBoxWindows(title, message);
+		did_show = showMessageBoxWindows(title, message, icon);
 	}
 
 	if (! did_show) {
-		did_show = showMessageBoxZenity(title, message);
+		did_show = showMessageBoxZenity(title, message, icon);
 	}
 
 	// Fall back to printing to stderr

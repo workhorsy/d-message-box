@@ -1,6 +1,6 @@
 
 import std.stdio : stdout;
-import message_box : showMessageBox;
+import message_box : showMessageBox, IconType;
 
 
 int main() {
@@ -12,7 +12,7 @@ int main() {
 
 	}
 
-	showMessageBox("Go Boom", "Example text goes here ...");
+	showMessageBox("Go Boom", "Example text goes here ...", IconType.Error);
 	stdout.writefln("Dialog ...");
 
 	return 0;
