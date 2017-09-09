@@ -3,6 +3,10 @@ import std.stdio : stdout;
 import message_box : showMessageBox, IconType;
 
 
+// FIXME: Add xmessage, and gxmessage
+// Make it work without sdl imports
+// What about OSX?
+
 int main() {
 	import derelict.sdl2.sdl : DerelictSDL2;
 	import derelict.util.loader : SharedLibVersion;

@@ -147,6 +147,29 @@ private bool showMessageBoxZenity(string title, string message, IconType icon) {
 	return false;
 }
 
+private bool showMessageBoxKdialog(string title, string message, IconType icon) {
+	import std.process : spawnProcess, wait;
+
+	string flags = "";
+	final switch (icon) {
+		case IconType.None: flags = "--msgbox"; break;
+		case IconType.Information: flags = "--msgbox"; break;
+		case IconType.Error: flags = "--error"; break;
+		case IconType.Warning: flags = "--sorry"; break;
+	}
+
+	// Show the message using kdialog
+	string[] paths = programPaths(["kdialog"]);
+	if (paths.length > 0) {
+		string[] args = [paths[0], flags, message, "--title", title];
+		auto pid = spawnProcess(args);
+		int status = wait(pid);
+		return true;
+	}
+
+	return false;
+}
+
 void showMessageBox(string title, string message, IconType icon) {
 	import std.stdio : stderr;
 
@@ -162,6 +185,10 @@ void showMessageBox(string title, string message, IconType icon) {
 
 	if (! did_show) {
 		did_show = showMessageBoxZenity(title, message, icon);
+	}
+
+	if (! did_show) {
+		did_show = showMessageBoxKdialog(title, message, icon);
 	}
 
 	// Fall back to printing to stderr
