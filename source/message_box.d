@@ -170,6 +170,29 @@ private bool showMessageBoxKdialog(string title, string message, IconType icon) 
 	return false;
 }
 
+private bool showMessageBoxGxmessage(string title, string message, IconType icon) {
+	import std.process : spawnProcess, wait;
+
+	string flags = "";
+	final switch (icon) {
+		case IconType.None: flags = ""; break;
+		case IconType.Information: flags = "Info: "; break;
+		case IconType.Error: flags = "Error: "; break;
+		case IconType.Warning: flags = "Warning: "; break;
+	}
+
+	// Show the message using gxmessage
+	string[] paths = programPaths(["gxmessage"]);
+	if (paths.length > 0) {
+		string[] args = [paths[0], "--ontop", "--center", "--title", title, flags ~ message];
+		auto pid = spawnProcess(args);
+		int status = wait(pid);
+		return true;
+	}
+
+	return false;
+}
+
 void showMessageBox(string title, string message, IconType icon) {
 	import std.stdio : stderr;
 
@@ -189,6 +212,10 @@ void showMessageBox(string title, string message, IconType icon) {
 
 	if (! did_show) {
 		did_show = showMessageBoxKdialog(title, message, icon);
+	}
+
+	if (! did_show) {
+		did_show = showMessageBoxGxmessage(title, message, icon);
 	}
 
 	// Fall back to printing to stderr

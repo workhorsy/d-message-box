@@ -3,7 +3,7 @@ import std.stdio : stdout;
 import message_box : showMessageBox, IconType;
 
 
-// FIXME: Add xmessage, and gxmessage
+// FIXME
 // Make it work without sdl imports
 // What about OSX?
 
