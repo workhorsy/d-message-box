@@ -6,3 +6,4 @@
 * What about OSX?
 * Make it not direction external program output to console.
 * Make an example with SDL and without
+* Remove BDD as we don't test anything
