@@ -93,11 +93,11 @@ private bool showMessageBoxSDL(string title, string message, IconType icon) {
 		case IconType.Warning: flags = SDL_MESSAGEBOX_WARNING; break;
 	}
 
-	// Try the SDL message box first
+	// Try the SDL message box
 	if (DerelictSDL2.isLoaded()) {
 		if (SDL_ShowSimpleMessageBox(flags, title.toStringz, message.toStringz, null) == 0) {
+			return true;
 		}
-		return true;
 	}
 
 	return false;
@@ -117,8 +117,12 @@ private bool showMessageBoxWindows(string title, string message, IconType icon) 
 			case IconType.Warning: flags = MB_ICONWARNING; break;
 		}
 
-		MessageBox(NULL, message.toUTFz!(const(wchar)*), title.toUTFz!(const(wchar)*), MB_OK | flags);
-		return true;
+		int status = MessageBox(NULL, message.toUTFz!(const(wchar)*), title.toUTFz!(const(wchar)*), MB_OK | flags);
+		if (status == 0) {
+			return false;
+		}
+
+		return false;
 	} else {
 		return false;
 	}
