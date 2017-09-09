@@ -141,7 +141,9 @@ private bool showMessageBoxZenity(string title, string message, IconType icon) {
 		string[] args = [paths[0], flags, "--title=" ~ title, "--text=" ~ message];
 		auto pid = spawnProcess(args);
 		int status = wait(pid);
-		return true;
+		if (status == 0) {
+			return true;
+		}
 	}
 
 	return false;
@@ -164,7 +166,9 @@ private bool showMessageBoxKdialog(string title, string message, IconType icon) 
 		string[] args = [paths[0], flags, message, "--title", title];
 		auto pid = spawnProcess(args);
 		int status = wait(pid);
-		return true;
+		if (status == 0) {
+			return true;
+		}
 	}
 
 	return false;
@@ -187,7 +191,9 @@ private bool showMessageBoxGxmessage(string title, string message, IconType icon
 		string[] args = [paths[0], "--ontop", "--center", "--title", title, flags ~ message];
 		auto pid = spawnProcess(args);
 		int status = wait(pid);
-		return true;
+		if (status == 0) {
+			return true;
+		}
 	}
 
 	return false;
