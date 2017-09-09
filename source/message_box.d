@@ -199,7 +199,7 @@ private bool showMessageBoxGxmessage(string title, string message, IconType icon
 	return false;
 }
 
-void showMessageBox(string title, string message, IconType icon) {
+bool showMessageBox(string title, string message, IconType icon) {
 	import std.stdio : stderr;
 
 	bool did_show = false;
@@ -224,8 +224,5 @@ void showMessageBox(string title, string message, IconType icon) {
 		did_show = showMessageBoxGxmessage(title, message, icon);
 	}
 
-	// Fall back to printing to stderr
-	if (! did_show) {
-		stderr.writefln("%s", message);
-	}
+	return did_show;
 }
