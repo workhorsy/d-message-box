@@ -17,7 +17,7 @@ int main() {
 
 	}
 
-	if (! showMessageBox("Go Boom", "Example text goes here ...", IconType.Error)) {
+	if (! showMessageBox("Birthday", "Today is Bob's Birthday!", IconType.Information)) {
 		stderr.writefln("Failed to show message box.");
 	}
 
