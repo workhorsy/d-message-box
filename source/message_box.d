@@ -81,22 +81,24 @@ private string[] programPaths(string[] program_names) {
 }
 
 private bool showMessageBoxSDL(string title, string message, IconType icon) {
-	import std.string : toStringz;
-	import derelict.sdl2.sdl : DerelictSDL2, SDL_ShowSimpleMessageBox,
-		SDL_MESSAGEBOX_INFORMATION, SDL_MESSAGEBOX_ERROR, SDL_MESSAGEBOX_WARNING;
+	version (Have_derelict_sdl2) {
+		import std.string : toStringz;
+		import derelict.sdl2.sdl : DerelictSDL2, SDL_ShowSimpleMessageBox,
+			SDL_MESSAGEBOX_INFORMATION, SDL_MESSAGEBOX_ERROR, SDL_MESSAGEBOX_WARNING;
 
-	uint flags = 0;
-	final switch (icon) {
-		case IconType.None: flags = 0; break;
-		case IconType.Information: flags = SDL_MESSAGEBOX_INFORMATION; break;
-		case IconType.Error: flags = SDL_MESSAGEBOX_ERROR; break;
-		case IconType.Warning: flags = SDL_MESSAGEBOX_WARNING; break;
-	}
+		uint flags = 0;
+		final switch (icon) {
+			case IconType.None: flags = 0; break;
+			case IconType.Information: flags = SDL_MESSAGEBOX_INFORMATION; break;
+			case IconType.Error: flags = SDL_MESSAGEBOX_ERROR; break;
+			case IconType.Warning: flags = SDL_MESSAGEBOX_WARNING; break;
+		}
 
-	// Try the SDL message box
-	if (DerelictSDL2.isLoaded()) {
-		if (SDL_ShowSimpleMessageBox(flags, title.toStringz, message.toStringz, null) == 0) {
-			return true;
+		// Try the SDL message box
+		if (DerelictSDL2.isLoaded()) {
+			if (SDL_ShowSimpleMessageBox(flags, title.toStringz, message.toStringz, null) == 0) {
+				return true;
+			}
 		}
 	}
 

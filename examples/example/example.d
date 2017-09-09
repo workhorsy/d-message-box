@@ -1,6 +1,6 @@
 
 
-// FIXME: This is broken, because it assumes that SDL is used
+
 
 int main() {
 	import message_box : showMessageBox, IconType;
