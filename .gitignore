@@ -3,4 +3,4 @@ dub.selections.json
 lib/
 *.o
 *.obj
-examples/example
+examples/example_sdl/example
