@@ -13,20 +13,6 @@ enum IconType {
 	Warning,
 }
 
-private string[] glob(string pattern) {
-	version (Windows) {
-		import std.file : dirEntries, SpanMode;
-		string[] retval;
-		foreach (entry; dirEntries("", pattern, SpanMode.breadth)) {
-			retval ~= entry;
-		}
-		return retval;
-	} else {
-		import glob : glob;
-		return glob(pattern);
-	}
-}
-
 private bool isExecutable(string path) {
 	version (Windows) {
 		return true;
@@ -42,6 +28,7 @@ private string[] programPaths(string[] program_names) {
 	import std.path : pathSeparator, buildPath;
 	import std.file : isDir;
 	import std.string : split;
+	import glob : glob;
 
 	string[] paths;
 	string[] exts;

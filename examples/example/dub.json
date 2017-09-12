@@ -1,10 +1,10 @@
 {
 	"name": "example",
 	"targetType": "executable",
-	"sourceFiles": ["../../source/message_box.d", "../../source/glob.d"],
+	"sourceFiles": ["../../source/message_box.d"],
 	"mainSourceFile": "example.d",
 
 	"dependencies": {
-
+		"d-glob": "~>0.2.0",
 	},
 }
