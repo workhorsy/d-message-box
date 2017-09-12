@@ -9,11 +9,11 @@
 	"license": "BSL-1.0",
 	"importPaths": ["source/"],
 
-	"targetName": "message_box",
-	"targetType": "staticLibrary",
-	"targetPath": "lib",
-
 	"dependencies": {
 		"d-glob": "~>0.2.0",
 	},
+
+	"targetName": "message_box",
+	"targetType": "staticLibrary",
+	"targetPath": "lib",
 }
