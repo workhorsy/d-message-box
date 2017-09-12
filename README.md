@@ -11,11 +11,6 @@ A simple message box for the D programming language
 dmd -c -D source/message_box.d -Df=docs/1.0.0/index.html
 ```
 
-# Run unit tests
-
-```
-dub test --main-file=test/main.d
-```
 
 [![Dub version](https://img.shields.io/dub/v/d-message-box.svg)](https://code.dlang.org/packages/d-message-box)
 [![Dub downloads](https://img.shields.io/dub/dt/d-message-box.svg)](https://code.dlang.org/packages/d-message-box)
