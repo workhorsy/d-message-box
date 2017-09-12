@@ -1,6 +1,13 @@
 # D Message Box
 A simple message box for the D programming language
 
+Tries to make a message box with:
+* SDL_ShowSimpleMessageBox (Derelict SDL2)
+* MessageBoxW (Windows)
+* Zenity (Gtk/Gnome)
+* Kdialog (KDE)
+* gxmessage (X11)
+
 # Documentation
 
 [https://workhorsy.github.io/d-message-box/1.0.0/](https://workhorsy.github.io/d-message-box/1.0.0/)
