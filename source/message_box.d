@@ -6,6 +6,8 @@
 
 module message_box;
 
+import std.process : ProcessPipes;
+
 enum IconType {
 	None,
 	Information,
@@ -65,6 +67,21 @@ private string[] programPaths(string[] program_names) {
 	}
 
 	return paths;
+}
+
+private void logProgramOutput(ProcessPipes pipes) {
+	import std.algorithm : map;
+	import std.conv : to;
+	import std.stdio : stderr, stdout;
+	import std.array : array;
+
+	string[] output = pipes.stderr.byLine.map!(n => n.to!string).array();
+	stderr.writefln("!!! show stderr: %s", output);
+	stderr.flush();
+
+	output = pipes.stdout.byLine.map!(n => n.to!string).array();
+	stdout.writefln("!!! show stdout: %s", output);
+	stdout.flush();
 }
 
 private bool showMessageBoxSDL(string title, string message, IconType icon) {
@@ -134,6 +151,7 @@ private bool showMessageBoxZenity(string title, string message, IconType icon) {
 		string[] args = [paths[0], flags, "--title=" ~ title, "--text=" ~ message];
 		auto pipes = pipeProcess(args, Redirect.stdin | Redirect.stdout | Redirect.stderr);
 		int status = wait(pipes.pid);
+		logProgramOutput(pipes);
 		if (status == 0) {
 			return true;
 		}
@@ -159,6 +177,7 @@ private bool showMessageBoxKdialog(string title, string message, IconType icon) 
 		string[] args = [paths[0], flags, message, "--title", title];
 		auto pipes = pipeProcess(args, Redirect.stdin | Redirect.stdout | Redirect.stderr);
 		int status = wait(pipes.pid);
+		logProgramOutput(pipes);
 		if (status == 0) {
 			return true;
 		}
@@ -184,6 +203,7 @@ private bool showMessageBoxGxmessage(string title, string message, IconType icon
 		string[] args = [paths[0], "--ontop", "--center", "--title", title, flags ~ message];
 		auto pipes = pipeProcess(args, Redirect.stdin | Redirect.stdout | Redirect.stderr);
 		int status = wait(pipes.pid);
+		logProgramOutput(pipes);
 		if (status == 0) {
 			return true;
 		}
