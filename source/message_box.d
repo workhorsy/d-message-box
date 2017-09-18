@@ -7,6 +7,21 @@
 /++
 A simple message box for the D programming language
 
+It should work without requiring any 3rd party GUI toolkits. But will work with what
+it can find on your OS at runtime.
+
+It tries to use the following:
+
+* SDL_ShowSimpleMessageBox (Derelict SDL2)
+
+* MessageBoxW (Windows)
+
+* Zenity (Gtk/Gnome)
+
+* Kdialog (KDE)
+
+* gxmessage (X11)
+
 Home page:
 $(LINK https://github.com/workhorsy/d-message-box)
 
