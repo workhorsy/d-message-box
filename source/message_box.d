@@ -4,11 +4,51 @@
 // https://github.com/workhorsy/d-message-box
 
 
+/++
+A simple message box for the D programming language
+
+Home page:
+$(LINK https://github.com/workhorsy/d-message-box)
+
+Version: 0.1.0
+
+License:
+Boost Software License - Version 1.0
+
+Examples:
+----
+import message_box : showMessageBox, IconType;
+import std.stdio : stdout, stderr;
+
+// Show the message box
+if (! showMessageBox("Party Time", "The roof is on fire!", IconType.Warning)) {
+	stderr.writefln("Failed to show message box.");
+}
+----
++/
+
 module message_box;
 
 import std.process : ProcessPipes;
 
+/++
+Will print output of zenity, kdialog, and gxmessage to console.
+Params:
+ message_box_use_log = True will print the output
++/
 public bool message_box_use_log = false;
+
+/++
+The type of icon to use in the message box.
+----
+enum IconType {
+	None,
+	Information,
+	Error,
+	Warning,
+}
+----
++/
 
 enum IconType {
 	None,
@@ -215,6 +255,14 @@ private bool showMessageBoxGxmessage(string title, string message, IconType icon
 
 	return false;
 }
+
+/++
+Shows the message box with the desired title, message, and icon.
+Params:
+ title = The string to show in the message box title
+ message = The string to show in the message box body
+ icon = The type of icon to show in the message box
++/
 
 bool showMessageBox(string title, string message, IconType icon) {
 	import std.stdio : stderr;
