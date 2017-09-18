@@ -4,14 +4,14 @@
 
 int main() {
 	import derelict.sdl2.sdl : DerelictSDL2;
-	import derelict.util.loader : SharedLibVersion;
+	import derelict.util.loader : SharedLibVersion, SharedLibLoadException;
 	import message_box : showMessageBox, IconType;
 	import std.stdio : stdout, stderr;
 
 	// Load SDL
 	try {
 		DerelictSDL2.load(SharedLibVersion(2, 0, 2));
-	} catch (Throwable) {
+	} catch (SharedLibLoadException) {
 
 	}
 
