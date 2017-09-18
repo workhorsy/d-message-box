@@ -10,12 +10,12 @@ Tries to make a message box with:
 
 # Documentation
 
-[https://workhorsy.github.io/d-message-box/1.0.0/](https://workhorsy.github.io/d-message-box/1.0.0/)
+[https://workhorsy.github.io/d-message-box/0.1.0/](https://workhorsy.github.io/d-message-box/0.1.0/)
 
 # Generate documentation
 
 ```
-dmd -c -D source/message_box.d -Df=docs/1.0.0/index.html
+dmd -c -D source/message_box.d -Df=docs/0.1.0/index.html
 ```
 
 
