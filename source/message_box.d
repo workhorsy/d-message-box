@@ -46,12 +46,23 @@ module message_box;
 
 import std.process : ProcessPipes;
 
+private bool message_box_use_log = false;
+
 /++
-Will print output of zenity, kdialog, and gxmessage to console.
+If true will print output of external program to console.
 Params:
- message_box_use_log = True will print the output
+ is_logging = If true will print to output
 +/
-public bool message_box_use_log = false;
+public void setMessageBoxUseLog(bool is_logging) {
+	message_box_use_log = is_logging;
+}
+
+/++
+Returns if external program logging is on or off.
++/
+public bool getMessageBoxUseLog() {
+	return message_box_use_log;
+}
 
 /++
 The type of icon to use in the message box.
