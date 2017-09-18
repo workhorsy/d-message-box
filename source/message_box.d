@@ -8,6 +8,8 @@ module message_box;
 
 import std.process : ProcessPipes;
 
+public bool message_box_use_log = false;
+
 enum IconType {
 	None,
 	Information,
@@ -74,6 +76,8 @@ private void logProgramOutput(ProcessPipes pipes) {
 	import std.conv : to;
 	import std.stdio : stderr, stdout;
 	import std.array : array;
+
+	if (! message_box_use_log) return;
 
 	string[] output = pipes.stderr.byLine.map!(n => n.to!string).array();
 	stderr.writefln("!!! show stderr: %s", output);
