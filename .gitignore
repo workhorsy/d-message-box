@@ -4,4 +4,6 @@ lib/
 *.o
 *.obj
 examples/example_sdl/example
+examples/example_sdl/example.exe
 examples/example/example
+examples/example/example.exe
