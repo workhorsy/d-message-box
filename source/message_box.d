@@ -118,7 +118,7 @@ private bool showMessageBoxWindows(string title, string message, IconType icon) 
 }
 
 private bool showMessageBoxZenity(string title, string message, IconType icon) {
-	import std.process : spawnProcess, wait;
+	import std.process : pipeProcess, wait, Redirect;
 
 	string flags = "";
 	final switch (icon) {
@@ -132,8 +132,8 @@ private bool showMessageBoxZenity(string title, string message, IconType icon) {
 	string[] paths = programPaths(["zenity"]);
 	if (paths.length > 0) {
 		string[] args = [paths[0], flags, "--title=" ~ title, "--text=" ~ message];
-		auto pid = spawnProcess(args);
-		int status = wait(pid);
+		auto pipes = pipeProcess(args, Redirect.stdin | Redirect.stdout | Redirect.stderr);
+		int status = wait(pipes.pid);
 		if (status == 0) {
 			return true;
 		}
@@ -143,7 +143,7 @@ private bool showMessageBoxZenity(string title, string message, IconType icon) {
 }
 
 private bool showMessageBoxKdialog(string title, string message, IconType icon) {
-	import std.process : spawnProcess, wait;
+	import std.process : pipeProcess, wait, Redirect;
 
 	string flags = "";
 	final switch (icon) {
@@ -157,8 +157,8 @@ private bool showMessageBoxKdialog(string title, string message, IconType icon) 
 	string[] paths = programPaths(["kdialog"]);
 	if (paths.length > 0) {
 		string[] args = [paths[0], flags, message, "--title", title];
-		auto pid = spawnProcess(args);
-		int status = wait(pid);
+		auto pipes = pipeProcess(args, Redirect.stdin | Redirect.stdout | Redirect.stderr);
+		int status = wait(pipes.pid);
 		if (status == 0) {
 			return true;
 		}
@@ -168,7 +168,7 @@ private bool showMessageBoxKdialog(string title, string message, IconType icon) 
 }
 
 private bool showMessageBoxGxmessage(string title, string message, IconType icon) {
-	import std.process : spawnProcess, wait;
+	import std.process : pipeProcess, wait, Redirect;
 
 	string flags = "";
 	final switch (icon) {
@@ -182,8 +182,8 @@ private bool showMessageBoxGxmessage(string title, string message, IconType icon
 	string[] paths = programPaths(["gxmessage"]);
 	if (paths.length > 0) {
 		string[] args = [paths[0], "--ontop", "--center", "--title", title, flags ~ message];
-		auto pid = spawnProcess(args);
-		int status = wait(pid);
+		auto pipes = pipeProcess(args, Redirect.stdin | Redirect.stdout | Redirect.stderr);
+		int status = wait(pipes.pid);
 		if (status == 0) {
 			return true;
 		}
