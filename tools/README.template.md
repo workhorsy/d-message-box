@@ -15,7 +15,7 @@ Tries to make a message box with:
 # Generate documentation
 
 ```
-dmd -c -D source/message_box.d -Df=docs/$VERSION/index.html
+dub --build=docs
 ```
 
 
