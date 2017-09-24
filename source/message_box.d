@@ -139,6 +139,7 @@ class MessageBox {
 	import message_box_sdl : MessageBoxSDL;
 	import message_box_win32 : MessageBoxWin32;
 	import message_box_zenity : MessageBoxZenity;
+	import message_box_kdialog : MessageBoxKdialog;
 
 	this(string title, string message, IconType icon_type) {
 		if (MessageBoxSDL.isSupported()) {
@@ -147,6 +148,8 @@ class MessageBox {
 			_dialog = new MessageBoxWin32(title, message, icon_type);
 		} else if (MessageBoxZenity.isSupported()) {
 			_dialog = new MessageBoxZenity(title, message, icon_type);
+		} else if (MessageBoxKdialog.isSupported()) {
+			_dialog = new MessageBoxKdialog(title, message, icon_type);
 		} else {
 			throw new Exception("Failed to find a way to make a message box.");
 		}
