@@ -28,16 +28,18 @@ class MessageBoxZenity : MessageBoxBase {
 
 		// Show the message using Zenity
 		string[] paths = programPaths(["zenity"]);
-		if (paths.length > 0) {
-			string[] args = [paths[0], flags, "--title=" ~ _title, "--text=" ~ _message];
-			auto pipes = pipeProcess(args, Redirect.stdin | Redirect.stdout | Redirect.stderr);
-			int status = wait(pipes.pid);
-			if (message_box_use_log) {
-				logProgramOutput(pipes);
-			}
-			if (status != 0) {
-				if (_on_error_cb) _on_error_cb(new Exception("Failed to show Zenity message box."));
-			}
+		if (paths.length == 0) {
+			if (_on_error_cb) _on_error_cb(new Exception("Failed to find Zenity."));
+		}
+
+		string[] args = [paths[0], flags, "--title=" ~ _title, "--text=" ~ _message];
+		auto pipes = pipeProcess(args, Redirect.stdin | Redirect.stdout | Redirect.stderr);
+		int status = wait(pipes.pid);
+		if (message_box_use_log) {
+			logProgramOutput(pipes);
+		}
+		if (status != 0) {
+			if (_on_error_cb) _on_error_cb(new Exception("Failed to show Zenity message box."));
 		}
 	}
 
