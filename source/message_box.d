@@ -137,10 +137,13 @@ enum IconType {
 
 class MessageBox {
 	import message_box_sdl : MessageBoxSDL;
+	import message_box_win32 : MessageBoxWin32;
 
 	this(string title, string message, IconType icon_type) {
 		if (MessageBoxSDL.isSupported()) {
 			_dialog = new MessageBoxSDL(title, message, icon_type);
+		} else if (MessageBoxWin32.isSupported()) {
+			_dialog = new MessageBoxWin32(title, message, icon_type);
 		} else {
 			throw new Exception("Failed to find a way to make a message box.");
 		}
