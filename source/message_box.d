@@ -44,9 +44,9 @@ if (! showMessageBox("Party Time", "The roof is on fire!", IconType.Warning)) {
 
 module message_box;
 
-import std.process : ProcessPipes;
 
-private bool message_box_use_log = false;
+bool message_box_use_log = false;
+
 
 /++
 If true will print output of external program to console.
@@ -76,6 +76,27 @@ enum IconType {
 ----
 +/
 
+abstract class MessageBoxBase {
+	this(string title, string message, IconType icon_type) {
+		_title = title;
+		_message = message;
+		_icon_type = icon_type;
+	}
+
+	void onError(void delegate(Throwable err) cb) {
+		_on_error_cb = cb;
+	}
+
+	void show(void delegate() cb);
+	void setPercent(ulong percent);
+	void close();
+
+	string _title;
+	string _message;
+	IconType _icon_type;
+	void delegate(Throwable err) _on_error_cb;
+}
+
 enum IconType {
 	None,
 	Information,
@@ -83,76 +104,6 @@ enum IconType {
 	Warning,
 }
 
-private bool isExecutable(string path) {
-	version (Windows) {
-		return true;
-	} else {
-		import std.file : getAttributes;
-		import core.sys.posix.sys.stat : S_IXUSR;
-		return (getAttributes(path) & S_IXUSR) > 0;
-	}
-}
-
-private string[] programPaths(string[] program_names) {
-	import std.process : environment;
-	import std.path : pathSeparator, buildPath;
-	import std.file : isDir;
-	import std.string : split;
-	import glob : glob;
-
-	string[] paths;
-	string[] exts;
-	if (environment.get("PATHEXT")) {
-		exts = environment["PATHEXT"].split(pathSeparator);
-	}
-
-	// Each path
-	foreach (p ; environment["PATH"].split(pathSeparator)) {
-		//stdout.writefln("p: %s", p);
-		// Each program name
-		foreach (program_name ; program_names) {
-			string full_name = buildPath(p, program_name);
-			//stdout.writefln("full_name: %s", full_name);
-			string[] full_names = glob(full_name);
-			//stdout.writefln("full_names: %s", full_names);
-
-			// Each program name that exists in a path
-			foreach (name ; full_names) {
-				// Save the path if it is executable
-				if (name && isExecutable(name) && ! isDir(name)) {
-					paths ~= name;
-				}
-				// Save the path if we found one with a common extension like .exe
-				foreach (e; exts) {
-					string full_name_ext = name ~ e;
-
-					if (isExecutable(full_name_ext) && ! isDir(full_name_ext)) {
-						paths ~= full_name_ext;
-					}
-				}
-			}
-		}
-	}
-
-	return paths;
-}
-
-private void logProgramOutput(ProcessPipes pipes) {
-	import std.algorithm : map;
-	import std.conv : to;
-	import std.stdio : stderr, stdout;
-	import std.array : array;
-
-	if (! message_box_use_log) return;
-
-	string[] output = pipes.stderr.byLine.map!(n => n.to!string).array();
-	stderr.writefln("!!! show stderr: %s", output);
-	stderr.flush();
-
-	output = pipes.stdout.byLine.map!(n => n.to!string).array();
-	stdout.writefln("!!! show stdout: %s", output);
-	stdout.flush();
-}
 
 private bool showMessageBoxSDL(string title, string message, IconType icon) {
 	version (Have_derelict_sdl2) {
@@ -206,6 +157,7 @@ private bool showMessageBoxWindows(string title, string message, IconType icon) 
 
 private bool showMessageBoxZenity(string title, string message, IconType icon) {
 	import std.process : pipeProcess, wait, Redirect;
+	import helpers : programPaths, logProgramOutput;
 
 	string flags = "";
 	final switch (icon) {
@@ -221,7 +173,9 @@ private bool showMessageBoxZenity(string title, string message, IconType icon) {
 		string[] args = [paths[0], flags, "--title=" ~ title, "--text=" ~ message];
 		auto pipes = pipeProcess(args, Redirect.stdin | Redirect.stdout | Redirect.stderr);
 		int status = wait(pipes.pid);
-		logProgramOutput(pipes);
+		if (message_box_use_log) {
+			logProgramOutput(pipes);
+		}
 		if (status == 0) {
 			return true;
 		}
@@ -232,6 +186,7 @@ private bool showMessageBoxZenity(string title, string message, IconType icon) {
 
 private bool showMessageBoxKdialog(string title, string message, IconType icon) {
 	import std.process : pipeProcess, wait, Redirect;
+	import helpers : programPaths, logProgramOutput;
 
 	string flags = "";
 	final switch (icon) {
@@ -247,7 +202,9 @@ private bool showMessageBoxKdialog(string title, string message, IconType icon) 
 		string[] args = [paths[0], flags, message, "--title", title];
 		auto pipes = pipeProcess(args, Redirect.stdin | Redirect.stdout | Redirect.stderr);
 		int status = wait(pipes.pid);
-		logProgramOutput(pipes);
+		if (message_box_use_log) {
+			logProgramOutput(pipes);
+		}
 		if (status == 0) {
 			return true;
 		}
@@ -258,6 +215,7 @@ private bool showMessageBoxKdialog(string title, string message, IconType icon) 
 
 private bool showMessageBoxGxmessage(string title, string message, IconType icon) {
 	import std.process : pipeProcess, wait, Redirect;
+	import helpers : programPaths, logProgramOutput;
 
 	string flags = "";
 	final switch (icon) {
@@ -273,7 +231,9 @@ private bool showMessageBoxGxmessage(string title, string message, IconType icon
 		string[] args = [paths[0], "--ontop", "--center", "--title", title, flags ~ message];
 		auto pipes = pipeProcess(args, Redirect.stdin | Redirect.stdout | Redirect.stderr);
 		int status = wait(pipes.pid);
-		logProgramOutput(pipes);
+		if (message_box_use_log) {
+			logProgramOutput(pipes);
+		}
 		if (status == 0) {
 			return true;
 		}

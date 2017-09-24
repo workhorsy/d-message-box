@@ -1,7 +1,7 @@
 {
 	"name": "example",
 	"targetType": "executable",
-	"sourceFiles": ["../../source/message_box.d"],
+	"sourcePaths": ["../../source/"],
 	"mainSourceFile": "example.d",
 
 	"dependencies": {
