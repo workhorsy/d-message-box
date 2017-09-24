@@ -44,8 +44,41 @@ if (! showMessageBox("Party Time", "The roof is on fire!", IconType.Warning)) {
 
 module message_box;
 
-
+bool is_sdl2_loadable = false;
 bool message_box_use_log = false;
+
+mixin template RUN_MAIN() {
+	// On Windows use the normal dlangui main
+	version (Windows) {
+		import dlangui;
+		mixin APP_ENTRY_POINT;
+	// On Linux use a custom main that checks if SDL is installed
+	} else {
+		int main(string[] args) {
+			// Figure out if the SDL2 libraries can be loaded
+			version (Have_derelict_sdl2) {
+				import derelict.sdl2.sdl : DerelictSDL2, SharedLibVersion, SharedLibLoadException;
+				import message_box : is_sdl2_loadable;
+				try {
+					DerelictSDL2.load(SharedLibVersion(2, 0, 2));
+					is_sdl2_loadable = true;
+					stdout.writefln("SDL was found ...");
+				} catch (SharedLibLoadException) {
+					stdout.writefln("SDL was NOT found ...");
+				}
+			}
+
+			// If SDL2 can be loaded, start the SDL2 main
+			if (is_sdl2_loadable) {
+				import dlangui.platforms.sdl.sdlapp : sdlmain;
+				return sdlmain(args);
+			// If not, use the normal main provided by the user
+			} else {
+				return UIAppMain(args);
+			}
+		}
+	}
+}
 
 
 /++
@@ -87,14 +120,48 @@ abstract class MessageBoxBase {
 		_on_error_cb = cb;
 	}
 
-	void show(void delegate() cb);
-	void setPercent(ulong percent);
-	void close();
+	void show();
 
 	string _title;
 	string _message;
 	IconType _icon_type;
 	void delegate(Throwable err) _on_error_cb;
+}
+
+class MessageBoxSDL : MessageBoxBase {
+	this(string title, string message, IconType icon_type) {
+		super(title, message, icon_type);
+	}
+
+	override void show() {
+
+	}
+
+	static bool isSupported() {
+/*
+version (Have_derelict_sdl2) {
+	import std.string : toStringz;
+	import derelict.sdl2.sdl : DerelictSDL2, SDL_ShowSimpleMessageBox,
+		SDL_MESSAGEBOX_INFORMATION, SDL_MESSAGEBOX_ERROR, SDL_MESSAGEBOX_WARNING;
+
+	uint flags = 0;
+	final switch (icon) {
+		case IconType.None: flags = 0; break;
+		case IconType.Information: flags = SDL_MESSAGEBOX_INFORMATION; break;
+		case IconType.Error: flags = SDL_MESSAGEBOX_ERROR; break;
+		case IconType.Warning: flags = SDL_MESSAGEBOX_WARNING; break;
+	}
+
+	// Try the SDL message box
+	if (DerelictSDL2.isLoaded()) {
+		if (SDL_ShowSimpleMessageBox(flags, title.toStringz, message.toStringz, null) == 0) {
+			return true;
+		}
+	}
+}
+*/
+		return true;
+	}
 }
 
 enum IconType {
@@ -104,6 +171,25 @@ enum IconType {
 	Warning,
 }
 
+class MessageBox {
+	this(string title, string message, IconType icon_type) {
+		if (MessageBoxSDL.isSupported()) {
+			_dialog = new MessageBoxSDL(title, message, icon_type);
+		} else {
+			throw new Exception("Failed to find a way to make a message box.");
+		}
+	}
+
+	void onError(void delegate(Throwable err) cb) {
+		_dialog._on_error_cb = cb;
+	}
+
+	void show() {
+		_dialog.show();
+	}
+
+	MessageBoxBase _dialog;
+}
 
 private bool showMessageBoxSDL(string title, string message, IconType icon) {
 	version (Have_derelict_sdl2) {
