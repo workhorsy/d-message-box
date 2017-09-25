@@ -30,6 +30,7 @@ class MessageBoxKdialog : MessageBoxBase {
 		string[] paths = programPaths(["kdialog"]);
 		if (paths.length == 0) {
 			if (_on_error_cb) _on_error_cb(new Exception("Failed to find Kdialog."));
+			return;
 		}
 
 		string[] args = [paths[0], flags, _message, "--title", _title];

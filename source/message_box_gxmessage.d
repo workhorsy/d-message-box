@@ -30,6 +30,7 @@ class MessageBoxGxmessage : MessageBoxBase {
 		string[] paths = programPaths(["gxmessage"]);
 		if (paths.length == 0) {
 			if (_on_error_cb) _on_error_cb(new Exception("Failed to find Gxmessage."));
+			return;
 		}
 
 		string[] args = [paths[0], "--ontop", "--center", "--title", _title, flags ~ _message];

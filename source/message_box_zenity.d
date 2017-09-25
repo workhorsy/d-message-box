@@ -30,6 +30,7 @@ class MessageBoxZenity : MessageBoxBase {
 		string[] paths = programPaths(["zenity"]);
 		if (paths.length == 0) {
 			if (_on_error_cb) _on_error_cb(new Exception("Failed to find Zenity."));
+			return;
 		}
 
 		string[] args = [paths[0], flags, "--title=" ~ _title, "--text=" ~ _message];
