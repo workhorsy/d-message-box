@@ -3,6 +3,7 @@ A simple message box for the D programming language
 
 It should work without requiring any 3rd party GUI toolkits. But will work with what
 it can find on your OS at runtime. It tries to use the following:
+* DlangUI (win32 on Windows/SDL2 on Linux)
 * SDL_ShowSimpleMessageBox (Derelict SDL2)
 * MessageBoxW (Windows)
 * Zenity (Gtk/Gnome)
