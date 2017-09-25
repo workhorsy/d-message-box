@@ -12,6 +12,8 @@ it can find on your OS at runtime.
 
 It tries to use the following:
 
+* DlangUI (win32 on Windows or SDL2 on Linux)
+
 * SDL_ShowSimpleMessageBox (Derelict SDL2)
 
 * MessageBoxW (Windows)
@@ -35,10 +37,16 @@ Examples:
 import message_box : showMessageBox, IconType;
 import std.stdio : stdout, stderr;
 
+// Create the message box
+auto dialog = new MessageBox("Party Time", "The roof is on fire!", IconType.Warning);
+
+// Set the error handler
+dialog.onError((Throwable err) {
+	stderr.writefln("Failed to show message box: %s", err);
+});
+
 // Show the message box
-if (! showMessageBox("Party Time", "The roof is on fire!", IconType.Warning)) {
-	stderr.writefln("Failed to show message box.");
-}
+dialog.show();
 ----
 +/
 
