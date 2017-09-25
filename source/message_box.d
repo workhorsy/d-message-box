@@ -136,6 +136,7 @@ enum IconType {
 }
 
 class MessageBox {
+	import message_box_dlangui : MessageBoxDlangUI;
 	import message_box_sdl : MessageBoxSDL;
 	import message_box_win32 : MessageBoxWin32;
 	import message_box_zenity : MessageBoxZenity;
@@ -149,7 +150,9 @@ class MessageBox {
 	 icon = The type of icon to show in the message box
 	+/
 	this(string title, string message, IconType icon_type) {
-		if (MessageBoxSDL.isSupported()) {
+		if (MessageBoxDlangUI.isSupported()) {
+			_dialog = new MessageBoxDlangUI(title, message, icon_type);
+		} else if (MessageBoxSDL.isSupported()) {
 			_dialog = new MessageBoxSDL(title, message, icon_type);
 		} else if (MessageBoxWin32.isSupported()) {
 			_dialog = new MessageBoxWin32(title, message, icon_type);
