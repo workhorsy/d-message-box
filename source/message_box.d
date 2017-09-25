@@ -106,7 +106,9 @@ public bool getMessageBoxUseLog() {
 }
 
 /++
-The type of icon to use in the message box.
+The type of icon to show in the message box. Some message boxes will not show
+the icon.
+
 ----
 enum IconType {
 	None,
@@ -116,6 +118,13 @@ enum IconType {
 }
 ----
 +/
+
+enum IconType {
+	None,
+	Information,
+	Error,
+	Warning,
+}
 
 abstract class MessageBoxBase {
 	this(string title, string message, IconType icon_type) {
@@ -136,13 +145,6 @@ abstract class MessageBoxBase {
 	void delegate(Throwable err) _on_error_cb;
 }
 
-enum IconType {
-	None,
-	Information,
-	Error,
-	Warning,
-}
-
 class MessageBox {
 	import message_box_dlangui : MessageBoxDlangUI;
 	import message_box_sdl : MessageBoxSDL;
@@ -152,11 +154,14 @@ class MessageBox {
 	import message_box_gxmessage : MessageBoxGxmessage;
 
 	/++
-	Shows the message box with the desired title, message, and icon.
+	Sets up the message box with the desired title, message, and icon. Does not
+	show it until the show method is called.
 	Params:
 	 title = The string to show in the message box title
 	 message = The string to show in the message box body
 	 icon = The type of icon to show in the message box
+	Throws:
+	 If it fails find any programs of libraries to make a message box with.
 	+/
 	this(string title, string message, IconType icon_type) {
 		if (MessageBoxDlangUI.isSupported()) {
@@ -176,10 +181,18 @@ class MessageBox {
 		}
 	}
 
+	/++
+	This method is called if there is an error when showing the message box.
+	Params:
+	 cb = The call back to fire when there is an error.
+	+/
 	void onError(void delegate(Throwable err) cb) {
 		_dialog._on_error_cb = cb;
 	}
 
+	/++
+	Shows the message box. Will block until it is closed.
+	+/
 	void show() {
 		_dialog.show();
 	}
