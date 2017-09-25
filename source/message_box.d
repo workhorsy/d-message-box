@@ -179,31 +179,3 @@ class MessageBox {
 	MessageBoxBase _dialog;
 }
 
-private bool showMessageBoxGxmessage(string title, string message, IconType icon) {
-	import std.process : pipeProcess, wait, Redirect;
-	import helpers : programPaths, logProgramOutput;
-
-	string flags = "";
-	final switch (icon) {
-		case IconType.None: flags = ""; break;
-		case IconType.Information: flags = "Info: "; break;
-		case IconType.Error: flags = "Error: "; break;
-		case IconType.Warning: flags = "Warning: "; break;
-	}
-
-	// Show the message using gxmessage
-	string[] paths = programPaths(["gxmessage"]);
-	if (paths.length > 0) {
-		string[] args = [paths[0], "--ontop", "--center", "--title", title, flags ~ message];
-		auto pipes = pipeProcess(args, Redirect.stdin | Redirect.stdout | Redirect.stderr);
-		int status = wait(pipes.pid);
-		if (message_box_use_log) {
-			logProgramOutput(pipes);
-		}
-		if (status == 0) {
-			return true;
-		}
-	}
-
-	return false;
-}
