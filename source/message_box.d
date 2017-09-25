@@ -141,6 +141,7 @@ class MessageBox {
 	import message_box_win32 : MessageBoxWin32;
 	import message_box_zenity : MessageBoxZenity;
 	import message_box_kdialog : MessageBoxKdialog;
+	import message_box_gxmessage : MessageBoxGxmessage;
 
 	/++
 	Shows the message box with the desired title, message, and icon.
@@ -160,6 +161,8 @@ class MessageBox {
 			_dialog = new MessageBoxZenity(title, message, icon_type);
 		} else if (MessageBoxKdialog.isSupported()) {
 			_dialog = new MessageBoxKdialog(title, message, icon_type);
+		} else if (MessageBoxGxmessage.isSupported()) {
+			_dialog = new MessageBoxGxmessage(title, message, icon_type);
 		} else {
 			throw new Exception("Failed to find a way to make a message box.");
 		}
