@@ -22,27 +22,30 @@ class MessageBoxDlangUI : MessageBoxBase {
 
 		// create window
 		auto flags = WindowFlag.Modal;
-		_window = Platform.instance.createWindow(_title.to!dstring, null, flags, 300, 150);
+		auto window = Platform.instance.createWindow(_title.to!dstring, null, flags, 300, 150);
 
 		auto vlayout = new VerticalLayout();
 		vlayout.margins = 20;
 		vlayout.padding = 10;
 
+		// Add the text
 		auto text = new TextWidget(null, _message.to!dstring);
 
+		// Add the button
 		auto button = new Button();
 		button.text = "Okay";
 		button.click = delegate(Widget w) {
-			_window.close();
+			window.close();
 			return true;
 		};
 
+		// Add the controls to the window
 		vlayout.addChild(text);
 		vlayout.addChild(button);
-		_window.mainWidget = vlayout;
+		window.mainWidget = vlayout;
 
 		// show window
-		_window.show();
+		window.show();
 
 		Platform.instance.enterMessageLoop();
 	}
@@ -56,7 +59,5 @@ class MessageBoxDlangUI : MessageBoxBase {
 			return false;
 		}
 	}
-
-	Window _window;
 }
 
