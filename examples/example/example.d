@@ -6,8 +6,6 @@ import message_box : MessageBox, IconType, RUN_MAIN;
 
 
 extern (C) int UIAppMain(string[] args) {
-	import core.thread;
-
 	// Create the message box
 	auto dialog = new MessageBox("Party Time", "The roof is on fire!", IconType.Warning);
 
