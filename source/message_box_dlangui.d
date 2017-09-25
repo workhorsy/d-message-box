@@ -24,9 +24,16 @@ class MessageBoxDlangUI : MessageBoxBase {
 		auto flags = WindowFlag.Modal;
 		auto window = Platform.instance.createWindow(_title.to!dstring, null, flags, 300, 150);
 
+		// Create the layout
 		auto vlayout = new VerticalLayout();
 		vlayout.margins = 20;
 		vlayout.padding = 10;
+
+		// FIXME: Figure out how to add information, error, and warning icons
+		// Add an icon
+		const Action action = ACTION_ABORT;
+		string drawableId = action.iconId;
+		auto icon = new ImageWidget("icon", drawableId);
 
 		// Add the text
 		auto text = new TextWidget(null, _message.to!dstring);
@@ -40,6 +47,7 @@ class MessageBoxDlangUI : MessageBoxBase {
 		};
 
 		// Add the controls to the window
+		vlayout.addChild(icon);
 		vlayout.addChild(text);
 		vlayout.addChild(button);
 		window.mainWidget = vlayout;
