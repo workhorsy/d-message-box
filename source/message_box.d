@@ -145,6 +145,9 @@ abstract class MessageBoxBase {
 	void delegate(Throwable err) _on_error_cb;
 }
 
+/++
+The MessageBox class
++/
 class MessageBox {
 	import message_box_dlangui : MessageBoxDlangUI;
 	import message_box_sdl : MessageBoxSDL;
@@ -161,7 +164,7 @@ class MessageBox {
 	 message = The string to show in the message box body
 	 icon = The type of icon to show in the message box
 	Throws:
-	 If it fails find any programs of libraries to make a message box with.
+	 If it fails to find any programs of libraries to make a message box with.
 	+/
 	this(string title, string message, IconType icon_type) {
 		if (MessageBoxDlangUI.isSupported()) {
@@ -199,4 +202,3 @@ class MessageBox {
 
 	MessageBoxBase _dialog;
 }
-
