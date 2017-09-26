@@ -4,7 +4,7 @@
 // https://github.com/workhorsy/d-message-box
 
 
-module helpers;
+module message_box_helpers;
 
 import std.process : ProcessPipes;
 
@@ -77,5 +77,3 @@ string[] programPaths(string[] program_names) {
 
 	return paths;
 }
-
-

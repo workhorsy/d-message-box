@@ -16,7 +16,7 @@ class MessageBoxZenity : MessageBoxBase {
 
 	override void show() {
 		import std.process : pipeProcess, wait, Redirect;
-		import helpers : programPaths, logProgramOutput;
+		import message_box_helpers : programPaths, logProgramOutput;
 
 		string flags = "";
 		final switch (_icon_type) {
@@ -45,8 +45,7 @@ class MessageBoxZenity : MessageBoxBase {
 	}
 
 	static bool isSupported() {
-		import helpers : programPaths;
+		import message_box_helpers : programPaths;
 		return programPaths(["zenity"]).length > 0;
 	}
 }
-
