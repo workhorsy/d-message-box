@@ -21,14 +21,14 @@ class MessageBoxWin32 : MessageBoxBase {
 			import std.utf : toUTFz;
 
 			int flags = 0;
-			final switch (icon) {
+			final switch (_icon_type) {
 				case IconType.None: flags = 0; break;
 				case IconType.Information: flags = MB_ICONINFORMATION; break;
 				case IconType.Error: flags = MB_ICONERROR; break;
 				case IconType.Warning: flags = MB_ICONWARNING; break;
 			}
 
-			int status = MessageBox(NULL, message.toUTFz!(const(wchar)*), title.toUTFz!(const(wchar)*), MB_OK | flags);
+			int status = MessageBox(NULL, _message.toUTFz!(const(wchar)*), _title.toUTFz!(const(wchar)*), MB_OK | flags);
 			if (status != 0) {
 				if (_on_error_cb) _on_error_cb(new Exception("Failed to show Win32 message box."));
 			}
@@ -45,4 +45,3 @@ class MessageBoxWin32 : MessageBoxBase {
 		}
 	}
 }
-
