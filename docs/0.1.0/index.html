@@ -477,25 +477,20 @@
     It should work without requiring any 3rd party GUI toolkits. But will work with what
 it can find on your OS at runtime.
 <br><br>
-
 It tries to use the following:
 <br><br>
-
+* DlangUI (win32 on Windows or SDL2 on Linux)
+<br><br>
 * SDL_ShowSimpleMessageBox (Derelict SDL2)
 <br><br>
-
 * MessageBoxW (Windows)
 <br><br>
-
 * Zenity (Gtk/Gnome)
 <br><br>
-
 * Kdialog (KDE)
 <br><br>
-
 * gxmessage (X11)
 <br><br>
-
 Home page:
 <a href="https://github.com/workhorsy/d-message-box">https://github.com/workhorsy/d-message-box</a>
 
@@ -509,8 +504,7 @@ Home page:
 
 
   </p>
-</div>
-<div class="ddoc_license">
+</div><div class="ddoc_license">
   <h4>License</h4>
   <p class="para">
     Boost Software License - Version 1.0
@@ -529,10 +523,16 @@ Home page:
         <li><code class="code"><span class="keyword">import</span> <span class="psymbol">message_box</span> : showMessageBox, IconType;
 <span class="keyword">import</span> std.stdio : stdout, stderr;
 
+<span class="comment">// Create the message box
+</span><span class="keyword">auto</span> dialog = <span class="keyword">new</span> MessageBox(<span class="string_literal">"Party Time"</span>, <span class="string_literal">"The roof is on fire!"</span>, IconType.Warning);
+
+<span class="comment">// Set the error handler
+</span>dialog.onError((Throwable err) {
+	stderr.writefln(<span class="string_literal">"Failed to show message box: %s"</span>, err);
+});
+
 <span class="comment">// Show the message box
-</span><span class="keyword">if</span> (! showMessageBox(<span class="string_literal">"Party Time"</span>, <span class="string_literal">"The roof is on fire!"</span>, IconType.Warning)) {
-	stderr.writefln(<span class="string_literal">"Failed to show message box."</span>);
-}
+</span>dialog.show();
 </code></li>
       </ol>
     </div>
@@ -541,7 +541,6 @@ Home page:
 
   </p>
 </div>
-
 </section>
 <section class="section ddoc_module_members_section">
   <div class="ddoc_module_members">
@@ -657,8 +656,15 @@ Home page:
   <section class="section ddoc_sections">
   <div class="ddoc_summary">
   <p class="para">
-    The type of icon to use in the message box.
+    The type of icon to show in the message box. Some message boxes will not show
+the icon.
 
+  </p>
+</div>
+<div class="ddoc_description">
+  <h4>Discussion</h4>
+  <p class="para">
+    
 <section class="code_listing">
   <div class="code_sample">
     <div class="dlang">
@@ -676,89 +682,6 @@ Home page:
 </section>
 
   </p>
-</div>
-
-</section>
-
-</div>
-
-</li><li class="ddoc_member">
-  <div class="ddoc_member_header">
-  <div class="ddoc_header_anchor">
-  <a href="#showMessageBox" id="showMessageBox"><code class="code">showMessageBox</code></a>
-</div>
-</div><div class="ddoc_decl">
-  <section class="section">
-    <div class="declaration">
-      <h4>Declaration</h4>
-      <div class="dlang">
-        <p class="para">
-          <code class="code">
-            <span class="ddoc_anchor" id="showMessageBox"></span>bool <code class="code">showMessageBox</code>(string <code class="code">title</code>, string <code class="code">message</code>, IconType <code class="code">icon</code>);
-
-          </code>
-        </p>
-      </div>
-    </div>
-  </section>
-</div>
-<div class="ddoc_decl">
-  <section class="section ddoc_sections">
-  <div class="ddoc_summary">
-  <p class="para">
-    Shows the <code class="code">message</code> box with the desired <code class="code">title</code>, <code class="code">message</code>, and <code class="code">icon</code>.
-
-  </p>
-</div>
-<div class="ddoc_params">
-  <h4>Parameters</h4>
-  <table cellspacing="0" cellpadding="5" border="0" class="graybox">
-    <tbody>
-      <tr class="ddoc_param_row">
-  <td scope="ddoc_param_id">
-  <code class="code">
-    <em class="term">string <code class="code">title</code></em>
-  </code>
-</td>
-<td>
-  <div class="ddoc_param_desc">
-    <p class="para">
-      The string to show in the <code class="code">message</code> box <code class="code">title</code>
-    </p>
-  </div>
-</td>
-</tr>
-<tr class="ddoc_param_row">
-  <td scope="ddoc_param_id">
-  <code class="code">
-    <em class="term">string <code class="code">message</code></em>
-  </code>
-</td>
-<td>
-  <div class="ddoc_param_desc">
-    <p class="para">
-      The string to show in the <code class="code">message</code> box body
-    </p>
-  </div>
-</td>
-</tr>
-<tr class="ddoc_param_row">
-  <td scope="ddoc_param_id">
-  <code class="code">
-    <em class="term">IconType <code class="code">icon</code></em>
-  </code>
-</td>
-<td>
-  <div class="ddoc_param_desc">
-    <p class="para">
-      The type of <code class="code">icon</code> to show in the <code class="code">message</code> box
-    </p>
-  </div>
-</td>
-</tr>
-
-    </tbody>
-  </table>
 </div>
 
 </section>

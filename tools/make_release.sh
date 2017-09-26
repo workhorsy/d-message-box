@@ -9,8 +9,10 @@ sed 's/$VERSION/'$VERSION'/g' tools/README.template.md > README.md
 
 # Generate documentation
 dub --build=docs
+rm -f -rf docs/$VERSION
 mkdir docs/$VERSION
 mv docs/message_box.html docs/$VERSION/index.html
+rm -f docs/*.html
 git add docs/$VERSION/
 
 # Create release
