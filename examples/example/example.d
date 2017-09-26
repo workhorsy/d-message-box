@@ -3,7 +3,7 @@
 import std.stdio : stdout, stderr;
 import message_box : MessageBox, IconType, RUN_MAIN;
 
-
+mixin RUN_MAIN;
 
 extern (C) int UIAppMain(string[] args) {
 	// Create the message box
@@ -19,8 +19,3 @@ extern (C) int UIAppMain(string[] args) {
 
 	return 0;
 }
-
-
-mixin RUN_MAIN;
-
-

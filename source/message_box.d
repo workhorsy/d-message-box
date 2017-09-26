@@ -34,19 +34,25 @@ Boost Software License - Version 1.0
 
 Examples:
 ----
-import message_box : showMessageBox, IconType;
 import std.stdio : stdout, stderr;
+import message_box : MessageBox, IconType, RUN_MAIN;
 
-// Create the message box
-auto dialog = new MessageBox("Party Time", "The roof is on fire!", IconType.Warning);
+mixin RUN_MAIN;
 
-// Set the error handler
-dialog.onError((Throwable err) {
-	stderr.writefln("Failed to show message box: %s", err);
-});
+extern (C) int UIAppMain(string[] args) {
+	// Create the message box
+	auto dialog = new MessageBox("Party Time", "The roof is on fire!", IconType.Warning);
 
-// Show the message box
-dialog.show();
+	// Set the error handler
+	dialog.onError((Throwable err) {
+		stderr.writefln("Failed to show message box: %s", err);
+	});
+
+	// Show the message box
+	dialog.show();
+
+	return 0;
+}
 ----
 +/
 
@@ -55,6 +61,11 @@ module message_box;
 bool is_sdl2_loadable = false;
 bool message_box_use_log = false;
 
+/++
+This should be called once at the start of a program. It generates the proper
+main function for your environment (win32/posix/dmail) and boot straps the
+main loopd for the GUI. This will call your UIAppMain function when ready.
++/
 mixin template RUN_MAIN() {
 	// On Windows use the normal dlangui main
 	version (Windows) {
