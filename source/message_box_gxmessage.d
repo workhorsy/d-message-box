@@ -6,7 +6,7 @@
 
 module message_box_gxmessage;
 
-import message_box : MessageBoxBase, IconType, message_box_use_log;
+import message_box : MessageBoxBase, IconType, use_log;
 
 
 class MessageBoxGxmessage : MessageBoxBase {
@@ -36,7 +36,7 @@ class MessageBoxGxmessage : MessageBoxBase {
 		string[] args = [paths[0], "--ontop", "--center", "--title", _title, flags ~ _message];
 		auto pipes = pipeProcess(args, Redirect.stdin | Redirect.stdout | Redirect.stderr);
 		int status = wait(pipes.pid);
-		if (message_box_use_log) {
+		if (use_log) {
 			logProgramOutput(pipes);
 		}
 		if (status != 0) {

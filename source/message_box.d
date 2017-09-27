@@ -59,7 +59,7 @@ extern (C) int UIAppMain(string[] args) {
 module message_box;
 
 bool is_sdl2_loadable = false;
-bool message_box_use_log = false;
+bool use_log = false;
 
 /++
 This should be called once at the start of a program. It generates the proper
@@ -105,15 +105,15 @@ If true will print output of external program to console.
 Params:
  is_logging = If true will print to output
 +/
-public void setMessageBoxUseLog(bool is_logging) {
-	message_box_use_log = is_logging;
+public void setUseLog(bool is_logging) {
+	use_log = is_logging;
 }
 
 /++
 Returns if external program logging is on or off.
 +/
-public bool getMessageBoxUseLog() {
-	return message_box_use_log;
+public bool getUseLog() {
+	return use_log;
 }
 
 /++
