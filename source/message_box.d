@@ -27,7 +27,7 @@ It tries to use the following:
 Home page:
 $(LINK https://github.com/workhorsy/d-message-box)
 
-Version: 0.1.0
+Version: 0.2.0
 
 License:
 Boost Software License - Version 1.0
@@ -83,21 +83,23 @@ main function for your environment (win32/posix/dmain) and boot straps the
 main loop for the GUI. This will call your UIAppMain function when ready.
 +/
 mixin template RUN_MAIN() {
-	// On Windows use the normal dlangui main
-	version (Windows) {
-		import dlangui;
-		mixin APP_ENTRY_POINT;
-	// On Linux use a custom main that checks if SDL is installed
-	} else {
-		int main(string[] args) {
-			import message_box : is_sdl2_loadable;
-			// If SDL2 can be loaded, start the SDL2 main
-			if (is_sdl2_loadable) {
-				import dlangui.platforms.sdl.sdlapp : sdlmain;
-				return sdlmain(args);
-			// If not, use the normal main provided by the user
-			} else {
-				return UIAppMain(args);
+	version (unittest) { } else {
+		// On Windows use the normal dlangui main
+		version (Windows) {
+			import dlangui;
+			mixin APP_ENTRY_POINT;
+		// On Linux use a custom main that checks if SDL is installed
+		} else {
+			int main(string[] args) {
+				import message_box : is_sdl2_loadable;
+				// If SDL2 can be loaded, start the SDL2 main
+				if (is_sdl2_loadable) {
+					import dlangui.platforms.sdl.sdlapp : sdlmain;
+					return sdlmain(args);
+				// If not, use the normal main provided by the user
+				} else {
+					return UIAppMain(args);
+				}
 			}
 		}
 	}
