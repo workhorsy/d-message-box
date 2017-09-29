@@ -477,20 +477,28 @@
     It should work without requiring any 3rd party GUI toolkits. But will work with what
 it can find on your OS at runtime.
 <br><br>
+
 It tries to use the following:
 <br><br>
+
 * DlangUI (win32 on Windows or SDL2 on Linux)
 <br><br>
+
 * SDL_ShowSimpleMessageBox (Derelict SDL2)
 <br><br>
+
 * MessageBoxW (Windows)
 <br><br>
+
 * Zenity (Gtk/Gnome)
 <br><br>
+
 * Kdialog (KDE)
 <br><br>
+
 * gxmessage (X11)
 <br><br>
+
 Home page:
 <a href="https://github.com/workhorsy/d-message-box">https://github.com/workhorsy/d-message-box</a>
 
@@ -504,7 +512,8 @@ Home page:
 
 
   </p>
-</div><div class="ddoc_license">
+</div>
+<div class="ddoc_license">
   <h4>License</h4>
   <p class="para">
     Boost Software License - Version 1.0
@@ -520,19 +529,25 @@ Home page:
   <div class="code_sample">
     <div class="dlang">
       <ol class="code_lines">
-        <li><code class="code"><span class="keyword">import</span> <span class="psymbol">message_box</span> : showMessageBox, IconType;
-<span class="keyword">import</span> std.stdio : stdout, stderr;
+        <li><code class="code"><span class="keyword">import</span> std.stdio : stdout, stderr;
+<span class="keyword">import</span> <span class="psymbol">message_box</span> : MessageBox, IconType, RUN_MAIN;
 
-<span class="comment">// Create the message box
-</span><span class="keyword">auto</span> dialog = <span class="keyword">new</span> MessageBox(<span class="string_literal">"Party Time"</span>, <span class="string_literal">"The roof is on fire!"</span>, IconType.Warning);
+<span class="keyword">mixin</span> RUN_MAIN;
 
-<span class="comment">// Set the error handler
-</span>dialog.onError((Throwable err) {
-	stderr.writefln(<span class="string_literal">"Failed to show message box: %s"</span>, err);
-});
+<span class="keyword">extern</span> (C) <span class="keyword">int</span> UIAppMain(string[] args) {
+	<span class="comment">// Create the message box
+</span>	<span class="keyword">auto</span> dialog = <span class="keyword">new</span> MessageBox(<span class="string_literal">"Party Time"</span>, <span class="string_literal">"The roof is on fire!"</span>, IconType.Warning);
 
-<span class="comment">// Show the message box
-</span>dialog.show();
+	<span class="comment">// Set the error handler
+</span>	dialog.onError((Throwable err) {
+		stderr.writefln(<span class="string_literal">"Failed to show message box: %s"</span>, err);
+	});
+
+	<span class="comment">// Show the message box
+</span>	dialog.show();
+
+	<span class="keyword">return</span> 0;
+}
 </code></li>
       </ol>
     </div>
@@ -541,6 +556,7 @@ Home page:
 
   </p>
 </div>
+
 </section>
 <section class="section ddoc_module_members_section">
   <div class="ddoc_module_members">
@@ -548,7 +564,7 @@ Home page:
   <li class="ddoc_member">
   <div class="ddoc_member_header">
   <div class="ddoc_header_anchor">
-  <a href="#setMessageBoxUseLog" id="setMessageBoxUseLog"><code class="code">setMessageBoxUseLog</code></a>
+  <a href="#RUN_MAIN" id="RUN_MAIN"><code class="code">RUN_MAIN</code></a>
 </div>
 </div><div class="ddoc_decl">
   <section class="section">
@@ -557,7 +573,40 @@ Home page:
       <div class="dlang">
         <p class="para">
           <code class="code">
-            <span class="ddoc_anchor" id="setMessageBoxUseLog"></span>void <code class="code">setMessageBoxUseLog</code>(bool <code class="code">is_logging</code>);
+            <span class="ddoc_anchor" id="RUN_MAIN"></span>template <code class="code">RUN_MAIN</code>()
+          </code>
+        </p>
+      </div>
+    </div>
+  </section>
+</div>
+<div class="ddoc_decl">
+  <section class="section ddoc_sections">
+  <div class="ddoc_summary">
+  <p class="para">
+    This should be called once at the start of a program. It generates the proper
+main function for your environment (win32/posix/dmail) and boot straps the
+main loopd for the GUI. This will call your UIAppMain function when ready.
+  </p>
+</div>
+
+</section>
+
+</div>
+
+</li><li class="ddoc_member">
+  <div class="ddoc_member_header">
+  <div class="ddoc_header_anchor">
+  <a href="#setUseLog" id="setUseLog"><code class="code">setUseLog</code></a>
+</div>
+</div><div class="ddoc_decl">
+  <section class="section">
+    <div class="declaration">
+      <h4>Declaration</h4>
+      <div class="dlang">
+        <p class="para">
+          <code class="code">
+            <span class="ddoc_anchor" id="setUseLog"></span>void <code class="code">setUseLog</code>(bool <code class="code">is_logging</code>);
 
           </code>
         </p>
@@ -603,7 +652,7 @@ Home page:
 </li><li class="ddoc_member">
   <div class="ddoc_member_header">
   <div class="ddoc_header_anchor">
-  <a href="#getMessageBoxUseLog" id="getMessageBoxUseLog"><code class="code">getMessageBoxUseLog</code></a>
+  <a href="#getUseLog" id="getUseLog"><code class="code">getUseLog</code></a>
 </div>
 </div><div class="ddoc_decl">
   <section class="section">
@@ -612,7 +661,7 @@ Home page:
       <div class="dlang">
         <p class="para">
           <code class="code">
-            <span class="ddoc_anchor" id="getMessageBoxUseLog"></span>bool <code class="code">getMessageBoxUseLog</code>();
+            <span class="ddoc_anchor" id="getUseLog"></span>bool <code class="code">getUseLog</code>();
 
           </code>
         </p>
@@ -803,6 +852,7 @@ the icon.
     If it fails to find any programs of libraries to make a <code class="code">message</code> box with.
   </p>
 </div>
+
 </section>
 
 </div>
