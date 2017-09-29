@@ -30,10 +30,10 @@ class MessageBoxSDL : MessageBoxBase {
 
 			// Try the SDL message box
 			if (SDL_ShowSimpleMessageBox(flags, _title.toStringz, _message.toStringz, null) != 0) {
-				if (_on_error_cb) _on_error_cb(new Exception("Failed to show SDL message box."));
+				this.fireOnError(new Exception("Failed to show SDL message box."));
 			}
 		} else {
-			if (_on_error_cb) _on_error_cb(new Exception("Failed to load SDL"));
+			this.fireOnError(new Exception("Failed to load SDL"));
 		}
 	}
 

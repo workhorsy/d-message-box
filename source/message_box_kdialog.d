@@ -29,7 +29,7 @@ class MessageBoxKdialog : MessageBoxBase {
 		// Show the message using kdialog
 		string[] paths = programPaths(["kdialog"]);
 		if (paths.length == 0) {
-			if (_on_error_cb) _on_error_cb(new Exception("Failed to find Kdialog."));
+			this.fireOnError(new Exception("Failed to find Kdialog."));
 			return;
 		}
 
@@ -40,7 +40,7 @@ class MessageBoxKdialog : MessageBoxBase {
 			logProgramOutput(pipes);
 		}
 		if (status != 0) {
-			if (_on_error_cb) _on_error_cb(new Exception("Failed to show Kdialog message box."));
+			this.fireOnError(new Exception("Failed to show Kdialog message box."));
 		}
 	}
 

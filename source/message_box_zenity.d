@@ -29,7 +29,7 @@ class MessageBoxZenity : MessageBoxBase {
 		// Show the message using Zenity
 		string[] paths = programPaths(["zenity"]);
 		if (paths.length == 0) {
-			if (_on_error_cb) _on_error_cb(new Exception("Failed to find Zenity."));
+			this.fireOnError(new Exception("Failed to find Zenity."));
 			return;
 		}
 
@@ -40,7 +40,7 @@ class MessageBoxZenity : MessageBoxBase {
 			logProgramOutput(pipes);
 		}
 		if (status != 0) {
-			if (_on_error_cb) _on_error_cb(new Exception("Failed to show Zenity message box."));
+			this.fireOnError(new Exception("Failed to show Zenity message box."));
 		}
 	}
 

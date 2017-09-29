@@ -29,7 +29,7 @@ class MessageBoxGxmessage : MessageBoxBase {
 		// Show the message using gxmessage
 		string[] paths = programPaths(["gxmessage"]);
 		if (paths.length == 0) {
-			if (_on_error_cb) _on_error_cb(new Exception("Failed to find Gxmessage."));
+			this.fireOnError(new Exception("Failed to find Gxmessage."));
 			return;
 		}
 
@@ -40,7 +40,7 @@ class MessageBoxGxmessage : MessageBoxBase {
 			logProgramOutput(pipes);
 		}
 		if (status != 0) {
-			if (_on_error_cb) _on_error_cb(new Exception("Failed to show Gxmessage message box."));
+			this.fireOnError(new Exception("Failed to show Gxmessage message box."));
 		}
 	}
 

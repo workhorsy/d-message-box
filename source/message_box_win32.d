@@ -30,10 +30,10 @@ class MessageBoxWin32 : MessageBoxBase {
 
 			int status = MessageBox(NULL, _message.toUTFz!(const(wchar)*), _title.toUTFz!(const(wchar)*), MB_OK | flags);
 			if (status != 0) {
-				if (_on_error_cb) _on_error_cb(new Exception("Failed to show Win32 message box."));
+				this.fireOnError(new Exception("Failed to show Win32 message box."));
 			}
 		} else {
-			if (_on_error_cb) _on_error_cb(new Exception("Failed to load Win32."));
+			this.fireOnError(new Exception("Failed to load Win32."));
 		}
 	}
 
