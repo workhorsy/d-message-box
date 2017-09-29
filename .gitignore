@@ -3,7 +3,8 @@ dub.selections.json
 lib/
 *.o
 *.obj
-examples/example_sdl/example
-examples/example_sdl/example.exe
+ui.log
+examples/example_dub/example
+examples/example_dub/example.exe
 examples/example/example
 examples/example/example.exe
