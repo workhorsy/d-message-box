@@ -63,8 +63,8 @@ bool use_log = false;
 
 /++
 This should be called once at the start of a program. It generates the proper
-main function for your environment (win32/posix/dmail) and boot straps the
-main loopd for the GUI. This will call your UIAppMain function when ready.
+main function for your environment (win32/posix/dmain) and boot straps the
+main loop for the GUI. This will call your UIAppMain function when ready.
 +/
 mixin template RUN_MAIN() {
 	// On Windows use the normal dlangui main
@@ -182,7 +182,7 @@ class MessageBox {
 	 message = The string to show in the message box body
 	 icon = The type of icon to show in the message box
 	Throws:
-	 If it fails to find any programs of libraries to make a message box with.
+	 If it fails to find any programs or libraries to make a message box with.
 	+/
 	this(string title, string message, IconType icon_type) {
 		if (MessageBoxDlangUI.isSupported()) {
