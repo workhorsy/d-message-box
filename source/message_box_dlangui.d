@@ -36,7 +36,7 @@ class MessageBoxDlangUI : MessageBoxBase {
 		auto icon = new ImageWidget("icon", drawableId);
 
 		// Add the text
-		auto text = new TextWidget(null, _message.to!dstring);
+		auto text = new MultilineTextWidget(null, _message.to!dstring);
 
 		// Add the button
 		auto button = new Button();
