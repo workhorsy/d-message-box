@@ -12,7 +12,7 @@ it can find on your OS at runtime. It tries to use the following:
 
 # Documentation
 
-[https://workhorsy.github.io/d-message-box/0.2.0/](https://workhorsy.github.io/d-message-box/0.2.0/)
+[https://workhorsy.github.io/d-message-box/0.3.0/](https://workhorsy.github.io/d-message-box/0.3.0/)
 
 # Generate documentation
 
