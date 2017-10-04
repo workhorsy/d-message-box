@@ -77,34 +77,6 @@ static this() {
 	}
 }
 
-/++
-This should be called once at the start of a program. It generates the proper
-main function for your environment (win32/posix/dmain) and boot straps the
-main loop for the GUI. This will call your UIAppMain function when ready.
-+/
-mixin template RUN_MAIN() {
-	version (unittest) { } else {
-		// On Windows use the normal dlangui main
-		version (Windows) {
-			import dlangui;
-			mixin APP_ENTRY_POINT;
-		// On Linux use a custom main that checks if SDL is installed
-		} else {
-			int main(string[] args) {
-				import message_box : is_sdl2_loadable;
-				// If SDL2 can be loaded, start the SDL2 main
-				if (is_sdl2_loadable) {
-					import dlangui.platforms.sdl.sdlapp : sdlmain;
-					return sdlmain(args);
-				// If not, use the normal main provided by the user
-				} else {
-					return UIAppMain(args);
-				}
-			}
-		}
-	}
-}
-
 
 /++
 If true will print output of external program to console.

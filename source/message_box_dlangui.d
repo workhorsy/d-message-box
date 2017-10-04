@@ -6,17 +6,16 @@
 
 module message_box_dlangui;
 
-import message_box : MessageBoxBase, IconType, is_sdl2_loadable;
+import message_box : MessageBoxBase, IconType;
 
 
 class MessageBoxDlangUI : MessageBoxBase {
-	import dlangui;
-
 	this(string title, string message, IconType icon_type) {
 		super(title, message, icon_type);
 	}
 
 	override void show() {
+/*
 		import std.conv : to;
 		import core.thread : Thread;
 
@@ -56,16 +55,14 @@ class MessageBoxDlangUI : MessageBoxBase {
 		window.show();
 
 		Platform.instance.enterMessageLoop();
+*/
 	}
 
 	static bool isSupported() {
 		version (Windows) {
 			return true;
-		} else version (Have_derelict_sdl2) {
-			return is_sdl2_loadable;
 		} else {
 			return false;
 		}
 	}
 }
-

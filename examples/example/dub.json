@@ -2,10 +2,8 @@
 	"name": "example",
 	"targetType": "executable",
 	"mainSourceFile": "example.d",
-	"sourceFiles-windows": ["win_app.def"],
 
 	"dependencies": {
 		"d-message-box": { "path": "../../" },
-		"dlangui": "~>0.9.141",
 	},
 }

@@ -1,5 +1,5 @@
 {
-	"name": "d-message-box",
+	"name": "d-message-box-dlangui",
 	"description": "A simple message box for the D programming language",
 	"authors": [
 		"Matthew Brennan Jones <matthew.brennan.jones@gmail.com>",
@@ -8,15 +8,16 @@
 	"copyright": "Copyright (c) 2017 Matthew Brennan Jones",
 	"license": "BSL-1.0",
 	"importPaths": ["source/"],
+	"sourceFiles-windows": ["win_app.def"],
 	"targetPath": "lib",
 
-
-	"targetName": "message_box",
-	"targetType": "staticLibrary",
-	"dependencies": {
-		"d-glob": "~>0.3.0",
-		"d-message-box-dlangui": { "path": "d-message-box-dlangui" },
+	"subConfigurations": {
+		"dlangui": "minimal"
 	},
 
-	"preBuildCommands" : ["cd $PACKAGE_DIR/d-message-box-dlangui; dub build --arch=x86_64"]
+	"targetName": "message_box_dlangui",
+	"targetType": "executable",
+	"dependencies": {
+		"dlangui": "~>0.9.141",
+	},
 }
