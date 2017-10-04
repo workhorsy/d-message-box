@@ -1,8 +1,10 @@
+// Copyright (c) 2017 Matthew Brennan Jones <matthew.brennan.jones@gmail.com>
+// Boost Software License - Version 1.0
+// A simple message box for the D programming language
+// https://github.com/workhorsy/d-message-box
 
 
 import std.stdio : stdout, stderr;
-import dlangui;
-//import message_box : MessageBox, IconType, RUN_MAIN;
 
 bool is_sdl2_loadable = false;
 
@@ -30,62 +32,17 @@ enum IconType {
 	Warning,
 }
 
-abstract class MessageBoxBase {
+
+class MessageBoxDlangUI {
+	import dlangui;
+
 	this(string title, string message, IconType icon_type) {
 		_title = title;
 		_message = message;
 		_icon_type = icon_type;
 	}
 
-	void onError(void delegate(Throwable err) cb) {
-		_on_error_cb = cb;
-	}
-
-	void fireOnError(Throwable err) {
-		auto old_cb = _on_error_cb;
-		_on_error_cb = null;
-
-		if (old_cb) old_cb(err);
-	}
-
-	void show();
-
-	string _title;
-	string _message;
-	IconType _icon_type;
-	void delegate(Throwable err) _on_error_cb;
-}
-
-mixin template RUN_MAIN() {
-	version (unittest) { } else {
-		// On Windows use the normal dlangui main
-		version (Windows) {
-			import dlangui;
-			mixin APP_ENTRY_POINT;
-		// On Linux use a custom main that checks if SDL is installed
-		} else {
-			int main(string[] args) {
-				// If SDL2 can be loaded, start the SDL2 main
-				if (is_sdl2_loadable) {
-					import dlangui.platforms.sdl.sdlapp : sdlmain;
-					return sdlmain(args);
-				// If not, use the normal main provided by the user
-				} else {
-					return UIAppMain(args);
-				}
-			}
-		}
-	}
-}
-
-class MessageBoxDlangUI : MessageBoxBase {
-	import dlangui;
-
-	this(string title, string message, IconType icon_type) {
-		super(title, message, icon_type);
-	}
-
-	override void show() {
+	void show() {
 		import std.conv : to;
 		import core.thread : Thread;
 
@@ -136,9 +93,42 @@ class MessageBoxDlangUI : MessageBoxBase {
 			return false;
 		}
 	}
+
+	void onError(void delegate(Throwable err) cb) {
+		_on_error_cb = cb;
+	}
+
+	void fireOnError(Throwable err) {
+		auto old_cb = _on_error_cb;
+		_on_error_cb = null;
+
+		if (old_cb) old_cb(err);
+	}
+
+	string _title;
+	string _message;
+	IconType _icon_type;
+	void delegate(Throwable err) _on_error_cb;
 }
 
-mixin RUN_MAIN;
+
+// On Windows use the normal dlangui main
+version (Windows) {
+	import dlangui;
+	mixin APP_ENTRY_POINT;
+// On Linux use a custom main that checks if SDL is installed
+} else {
+	int main(string[] args) {
+		// If SDL2 can be loaded, start the SDL2 main
+		if (is_sdl2_loadable) {
+			import dlangui.platforms.sdl.sdlapp : sdlmain;
+			return sdlmain(args);
+		// If not, use the normal main provided by the user
+		} else {
+			return UIAppMain(args);
+		}
+	}
+}
 
 extern (C) int UIAppMain(string[] args) {
 	// Create the message box
