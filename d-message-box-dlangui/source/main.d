@@ -5,25 +5,8 @@
 
 
 import std.stdio : stdout, stderr;
+import dlangui;
 
-bool is_sdl2_loadable = false;
-
-
-static this() {
-	import std.stdio : stdout;
-
-	// Figure out if the SDL2 libraries can be loaded
-	version (Have_derelict_sdl2) {
-		import derelict.sdl2.sdl : DerelictSDL2, SharedLibVersion, SharedLibLoadException;
-		try {
-			DerelictSDL2.load(SharedLibVersion(2, 0, 2));
-			is_sdl2_loadable = true;
-			stdout.writefln("SDL was found ...");
-		} catch (SharedLibLoadException) {
-			stdout.writefln("SDL was NOT found ...");
-		}
-	}
-}
 
 enum IconType {
 	None,
@@ -84,16 +67,6 @@ class MessageBoxDlangUI {
 		Platform.instance.enterMessageLoop();
 	}
 
-	static bool isSupported() {
-		version (Windows) {
-			return true;
-		} else version (Have_derelict_sdl2) {
-			return is_sdl2_loadable;
-		} else {
-			return false;
-		}
-	}
-
 	void onError(void delegate(Throwable err) cb) {
 		_on_error_cb = cb;
 	}
@@ -112,23 +85,9 @@ class MessageBoxDlangUI {
 }
 
 
-// On Windows use the normal dlangui main
-version (Windows) {
-	import dlangui;
-	mixin APP_ENTRY_POINT;
-// On Linux use a custom main that checks if SDL is installed
-} else {
-	int main(string[] args) {
-		// If SDL2 can be loaded, start the SDL2 main
-		if (is_sdl2_loadable) {
-			import dlangui.platforms.sdl.sdlapp : sdlmain;
-			return sdlmain(args);
-		// If not, use the normal main provided by the user
-		} else {
-			return UIAppMain(args);
-		}
-	}
-}
+
+mixin APP_ENTRY_POINT;
+
 
 extern (C) int UIAppMain(string[] args) {
 	// Create the message box
