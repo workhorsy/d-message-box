@@ -18,5 +18,10 @@
 		"d-message-box-dlangui": { "path": "d-message-box-dlangui" },
 	},
 
-	"preBuildCommands" : ["cd $PACKAGE_DIR/d-message-box-dlangui; dub build --arch=x86_64"]
+	"preBuildCommands" : [
+		"echo `date`",
+		"#rdmd $PACKAGE_DIR/source/compressed_file.d $PACKAGE_DIR/tools/files_to_data.d",
+		"#cd $PACKAGE_DIR/d-message-box-dlangui; dub build --arch=x86_64",
+		"cd $PACKAGE_DIR/d-message-box-dlangui/files_to_data; dub run --arch=x86_64 --build=debug"
+	]
 }

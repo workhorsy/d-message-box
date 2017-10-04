@@ -5,6 +5,13 @@ import message_box : MessageBox, IconType;
 
 
 int main(string[] args) {
+	import data : compressed_files;
+	import extract : extractFiles;
+
+	extractFiles(compressed_files, delegate(int percent) {
+		//dialog.setPercent(percent);
+	});
+
 	// Create the message box
 	auto dialog = new MessageBox("Party Time", "The roof is on fire!", IconType.Warning);
 

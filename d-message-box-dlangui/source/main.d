@@ -5,6 +5,7 @@
 
 
 import std.stdio : stdout, stderr;
+import std.getopt;
 import dlangui;
 
 
@@ -90,8 +91,21 @@ mixin APP_ENTRY_POINT;
 
 
 extern (C) int UIAppMain(string[] args) {
+	string title;
+	string message;
+	IconType icon_type;
+
+	stdout.writefln("%s", args);
+
+	getopt(
+		args,
+		"title", &title,
+		"message", &message,
+		"icon_type", &icon_type,
+	);
+
 	// Create the message box
-	auto dialog = new MessageBoxDlangUI("Party Time", "The roof is on fire!", IconType.Warning);
+	auto dialog = new MessageBoxDlangUI(title, message, icon_type);
 
 	// Set the error handler
 	dialog.onError((Throwable err) {

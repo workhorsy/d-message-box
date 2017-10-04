@@ -1,0 +1,14 @@
+{
+	"name": "files_to_data",
+	"description": "convert files to D header files",
+	"authors": [
+		"Matthew Brennan Jones <matthew.brennan.jones@gmail.com>",
+	],
+	"homepage": "https://github.com/workhorsy/d-message-box",
+	"copyright": "Copyright (c) 2017 Matthew Brennan Jones",
+	"license": "BSL-1.0",
+	"sourceFiles": ["$PACKAGE_DIR/../../source/compressed_file.d"],
+	"targetPath": "lib",
+	"targetType": "executable",
+	"mainSourceFile": "files_to_data.d",
+}
