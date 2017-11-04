@@ -8,7 +8,6 @@
 	"copyright": "Copyright (c) 2017 Matthew Brennan Jones",
 	"license": "BSL-1.0",
 	"importPaths": ["source/"],
-	"sourceFiles-windows": ["win_app.def"],
 	"targetPath": "lib",
 
 	"subConfigurations": {
@@ -20,4 +19,11 @@
 	"dependencies": {
 		"dlangui": "~>0.9.141",
 	},
+
+	"preBuildCommands" : [
+		"echo \"!!! pre d-message-box-dlangui\"",
+	],
+	"postBuildCommands" : [
+		"echo \"!!! post d-message-box-dlangui\"",
+	]
 }

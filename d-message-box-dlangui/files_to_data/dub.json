@@ -11,4 +11,11 @@
 	"targetPath": "lib",
 	"targetType": "executable",
 	"mainSourceFile": "files_to_data.d",
+
+	"preBuildCommands" : [
+		"echo \"!!! pre files_to_data\"",
+	],
+	"postBuildCommands" : [
+		"echo \"!!! post files_to_data\"",
+	]
 }

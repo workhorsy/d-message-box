@@ -15,12 +15,14 @@
 	"targetType": "staticLibrary",
 	"dependencies": {
 		"d-glob": "~>0.3.0",
-		"d-message-box-dlangui": { "path": "d-message-box-dlangui" },
 	},
 
 	"preBuildCommands" : [
-		"echo `date`",
-		"cd $PACKAGE_DIR/d-message-box-dlangui; dub build --arch=x86_64 --build=debug",
-		"cd $PACKAGE_DIR/d-message-box-dlangui/files_to_data; dub run --arch=x86_64 --build=debug"
+		"echo \"!!! pre d-message-box\"",
+		"cd $PACKAGE_DIR\\d-message-box-dlangui && dub build --arch=x86_64 --build=debug",
+		"cd $PACKAGE_DIR\\d-message-box-dlangui\\files_to_data && dub run --arch=x86_64 --build=debug",
+	],
+	"postBuildCommands" : [
+		"echo \"!!! post d-message-box\"",
 	]
 }
