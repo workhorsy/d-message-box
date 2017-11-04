@@ -43,7 +43,7 @@ int run() {
 
 	// Get a list of all the files to store
 	string[] dirs_to_scan = [
-		"d-message-box-dlangui/lib",
+		"lib",
 	];
 
 	// FIXME: Rather than storing all files in RAM, write them to disk one-by-one.
