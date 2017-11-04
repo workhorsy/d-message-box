@@ -12,9 +12,9 @@ void extractFiles(immutable CompressedFile[] compressed_files, void delegate(int
 
 	string root_path;
 	version (Windows) {
-		root_path = expandPath("%APPDATA%/MalwareForay/");
+		root_path = expandPath(".");
 	} else {
-		root_path = expandPath("~/.MalwareForay/");
+		root_path = expandPath(".");
 		//stdout.writefln("root_path: %s", root_path);
 	}
 
@@ -106,22 +106,6 @@ private void extract(immutable CompressedFile[] compressed_files, string arch, s
 	string cwd = getcwd();
 	stdout.writefln("cwd: %s", cwd);
 	//stdout.flush();
-
-	version (Windows) {
-		// Copy the binaries to the same directory as the exe
-		string[] entries = dirEntries("binaries/windows/%s".format(arch), SpanMode.depth).map!(n => n.name).array();
-		foreach (path ; entries) {
-			if (exists(baseName(path))) {
-				stdout.writefln("Skipping copying of: %s".format(baseName(path)));
-				continue;
-			}
-
-			if (isFile(path)) {
-				stdout.writefln("Copying: %s".format(baseName(path)));
-				copy(path, baseName(path));
-			}
-		}
-	}
 
 	progress_cb(100);
 }
