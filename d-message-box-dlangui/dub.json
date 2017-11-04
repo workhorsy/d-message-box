@@ -20,10 +20,10 @@
 		"dlangui": "~>0.9.141",
 	},
 
-	"preBuildCommands" : [
+	"preGenerateCommands" : [
 		"echo \"!!! pre d-message-box-dlangui\"",
 	],
-	"postBuildCommands" : [
+	"postGenerateCommands" : [
 		"echo \"!!! post d-message-box-dlangui\"",
 	]
 }

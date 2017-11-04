@@ -12,10 +12,10 @@
 	"targetType": "executable",
 	"mainSourceFile": "files_to_data.d",
 
-	"preBuildCommands" : [
+	"preGenerateCommands" : [
 		"echo \"!!! pre files_to_data\"",
 	],
-	"postBuildCommands" : [
+	"postGenerateCommands" : [
 		"echo \"!!! post files_to_data\"",
 	]
 }
