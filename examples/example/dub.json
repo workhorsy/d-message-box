@@ -3,6 +3,9 @@
 	"targetType": "executable",
 	"mainSourceFile": "example.d",
 
+	"sourceFiles": ["../../d-message-box-dlangui/files_to_data/data.d"],
+	"sourceFiles-windows": ["../../d-message-box-dlangui/source/win_app.def"],
+
 	"dependencies": {
 		"d-message-box": { "path": "../../" },
 	},

@@ -15,6 +15,8 @@ class MessageBoxWin32 : MessageBoxBase {
 	}
 
 	override void show() {
+		// FIXME: Truned off for test
+/*
 		version (Windows) {
 			import core.runtime;
 			import core.sys.windows.windows;
@@ -35,6 +37,7 @@ class MessageBoxWin32 : MessageBoxBase {
 		} else {
 			this.fireOnError(new Exception("Failed to load Win32."));
 		}
+*/
 	}
 
 	static bool isSupported() {

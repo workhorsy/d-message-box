@@ -15,6 +15,7 @@ class MessageBoxDlangUI : MessageBoxBase {
 	}
 
 	override void show() {
+		// FIXME: Change to use version in another process
 /*
 		import std.conv : to;
 		import core.thread : Thread;
