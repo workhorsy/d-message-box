@@ -5,9 +5,7 @@ import message_box : MessageBox, IconType;
 
 
 int main(string[] args) {
-	// FIXME: Extract this away so the compressed file is inside the library
-	import data : compressed_files;
-	MessageBox.init(compressed_files);
+	MessageBox.init();
 
 	// Create the message box
 	auto dialog = new MessageBox("Party Time", "The roof is on fire!", IconType.Warning);

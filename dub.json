@@ -10,6 +10,7 @@
 	"importPaths": ["source/"],
 	"targetPath": "lib",
 
+	"sourceFiles": ["d-message-box-dlangui/files_to_data/data.d"],
 
 	"targetName": "message_box",
 	"targetType": "staticLibrary",

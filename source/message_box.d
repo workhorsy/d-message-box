@@ -195,7 +195,8 @@ class MessageBox {
 		_dialog.show();
 	}
 
-	public static void init(immutable CompressedFile[] compressed_files) {
+	public static void init() {
+		import data : compressed_files;
 		import extract : extractFiles;
 
 		extractFiles(compressed_files, delegate(int percent) {
