@@ -5,13 +5,9 @@ import message_box : MessageBox, IconType;
 
 
 int main(string[] args) {
+	// FIXME: Extract this away so the compressed file is inside the library
 	import data : compressed_files;
-	import extract : extractFiles;
-
-	// FIXME: Move the extraction into message box lib
-	extractFiles(compressed_files, delegate(int percent) {
-		//dialog.setPercent(percent);
-	});
+	MessageBox.init(compressed_files);
 
 	// Create the message box
 	auto dialog = new MessageBox("Party Time", "The roof is on fire!", IconType.Warning);

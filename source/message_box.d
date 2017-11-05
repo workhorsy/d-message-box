@@ -143,6 +143,7 @@ abstract class MessageBoxBase {
 The MessageBox class
 +/
 class MessageBox {
+	import compressed_file : CompressedFile;
 	import message_box_dlangui : MessageBoxDlangUI;
 	import message_box_sdl : MessageBoxSDL;
 	import message_box_win32 : MessageBoxWin32;
@@ -192,6 +193,14 @@ class MessageBox {
 	+/
 	void show() {
 		_dialog.show();
+	}
+
+	public static void init(immutable CompressedFile[] compressed_files) {
+		import extract : extractFiles;
+
+		extractFiles(compressed_files, delegate(int percent) {
+			//dialog.setPercent(percent);
+		});
 	}
 
 	MessageBoxBase _dialog;
