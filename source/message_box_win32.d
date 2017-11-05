@@ -3,7 +3,9 @@
 // A simple message box for the D programming language
 // https://github.com/workhorsy/d-message-box
 
-
+// FIXME: Move this into its own process. This way the
+// end user program does not need any win_app.def nonsense.
+/*
 module message_box_win32;
 
 import message_box : MessageBoxBase, IconType;
@@ -15,8 +17,6 @@ class MessageBoxWin32 : MessageBoxBase {
 	}
 
 	override void show() {
-		// FIXME: Truned off for test
-/*
 		version (Windows) {
 			import core.runtime;
 			import core.sys.windows.windows;
@@ -37,7 +37,6 @@ class MessageBoxWin32 : MessageBoxBase {
 		} else {
 			this.fireOnError(new Exception("Failed to load Win32."));
 		}
-*/
 	}
 
 	static bool isSupported() {
@@ -48,3 +47,4 @@ class MessageBoxWin32 : MessageBoxBase {
 		}
 	}
 }
+*/

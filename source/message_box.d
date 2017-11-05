@@ -146,7 +146,9 @@ class MessageBox {
 	import compressed_file : CompressedFile;
 	import message_box_dlangui : MessageBoxDlangUI;
 	import message_box_sdl : MessageBoxSDL;
+/*
 	import message_box_win32 : MessageBoxWin32;
+*/
 	import message_box_zenity : MessageBoxZenity;
 	import message_box_kdialog : MessageBoxKdialog;
 	import message_box_gxmessage : MessageBoxGxmessage;
@@ -166,8 +168,10 @@ class MessageBox {
 			_dialog = new MessageBoxDlangUI(title, message, icon_type);
 		} else if (MessageBoxSDL.isSupported()) {
 			_dialog = new MessageBoxSDL(title, message, icon_type);
+/*
 		} else if (MessageBoxWin32.isSupported()) {
 			_dialog = new MessageBoxWin32(title, message, icon_type);
+*/
 		} else if (MessageBoxZenity.isSupported()) {
 			_dialog = new MessageBoxZenity(title, message, icon_type);
 		} else if (MessageBoxKdialog.isSupported()) {
