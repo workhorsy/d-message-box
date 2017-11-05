@@ -35,11 +35,9 @@ Boost Software License - Version 1.0
 Examples:
 ----
 import std.stdio : stdout, stderr;
-import message_box : MessageBox, IconType, RUN_MAIN;
+import message_box : MessageBox, IconType;
 
-mixin RUN_MAIN;
-
-extern (C) int UIAppMain(string[] args) {
+int main(string[] args) {
 	// Create the message box
 	auto dialog = new MessageBox("Party Time", "The roof is on fire!", IconType.Warning);
 
