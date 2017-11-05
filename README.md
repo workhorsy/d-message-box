@@ -15,7 +15,6 @@ it can find on your OS at runtime. It tries to use the following:
 * Make it extract the exe to a temp directory, and cleanup with a scope exit function
 * Move the code generating functions into the dlangui dub file
 * MessageBoxWin32 is commented out, because it fails to compile
-* The dlangui message box should show on non Windows platforms, if SDL is found
 * Update the documentation example to be accurate too
 
 # Documentation

@@ -6,7 +6,7 @@
 
 module message_box_dlangui;
 
-import message_box : MessageBoxBase, IconType, use_log;
+import message_box : MessageBoxBase, IconType, use_log, is_sdl2_loadable;
 
 
 class MessageBoxDlangUI : MessageBoxBase {
@@ -59,7 +59,7 @@ class MessageBoxDlangUI : MessageBoxBase {
 		version (Windows) {
 			return true;
 		} else {
-			return false;
+			return is_sdl2_loadable;
 		}
 	}
 }
