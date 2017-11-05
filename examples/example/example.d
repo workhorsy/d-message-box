@@ -8,6 +8,7 @@ int main(string[] args) {
 	import data : compressed_files;
 	import extract : extractFiles;
 
+	// FIXME: Move the extraction into message box lib
 	extractFiles(compressed_files, delegate(int percent) {
 		//dialog.setPercent(percent);
 	});

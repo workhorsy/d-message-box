@@ -6,7 +6,7 @@
 
 module message_box_dlangui;
 
-import message_box : MessageBoxBase, IconType;
+import message_box : MessageBoxBase, IconType, use_log;
 
 
 class MessageBoxDlangUI : MessageBoxBase {
@@ -15,48 +15,44 @@ class MessageBoxDlangUI : MessageBoxBase {
 	}
 
 	override void show() {
-		// FIXME: Change to use version in another process
-/*
-		import std.conv : to;
-		import core.thread : Thread;
+		import std.process : pipeProcess, wait, Redirect;
+		import std.string : format;
+		import std.file : exists;
+		import message_box_helpers : programPaths, logProgramOutput;
 
-		// create window
-		auto flags = WindowFlag.Modal;
-		auto window = Platform.instance.createWindow(_title.to!dstring, null, flags, 300, 150);
+		// Find the message box program
+		string path = "message_box_dlangui.exe";
+		if (! exists(path)) {
+			this.fireOnError(new Exception("Failed to find message_box_dlangui.exe."));
+			return;
+		}
 
-		// Create the layout
-		auto vlayout = new VerticalLayout();
-		vlayout.margins = 20;
-		vlayout.padding = 10;
+		// Get the icon type arg
+		string icon_type = "";
+		final switch (_icon_type) {
+			case IconType.None: icon_type = "None"; break;
+			case IconType.Information: icon_type = "Information"; break;
+			case IconType.Error: icon_type = "Error"; break;
+			case IconType.Warning: icon_type = "Warning"; break;
+		}
 
-		// FIXME: Figure out how to add information, error, and warning icons
-		// Add an icon
-		const Action action = ACTION_ABORT;
-		string drawableId = action.iconId;
-		auto icon = new ImageWidget("icon", drawableId);
+		// Create all the command line args
+		string[] args = [
+			path,
+			`--title=%s`.format(_title),
+			`--message=%s`.format(_message),
+			`--icon_type=%s`.format(icon_type)
+		];
 
-		// Add the text
-		auto text = new MultilineTextWidget(null, _message.to!dstring);
-
-		// Add the button
-		auto button = new Button();
-		button.text = "Okay";
-		button.click = delegate(Widget w) {
-			window.close();
-			return true;
-		};
-
-		// Add the controls to the window
-		vlayout.addChild(icon);
-		vlayout.addChild(text);
-		vlayout.addChild(button);
-		window.mainWidget = vlayout;
-
-		// show window
-		window.show();
-
-		Platform.instance.enterMessageLoop();
-*/
+		// Run the message box program
+		auto pipes = pipeProcess(args, Redirect.stdin | Redirect.stdout | Redirect.stderr);
+		int status = wait(pipes.pid);
+		if (use_log) {
+			logProgramOutput(pipes);
+		}
+		if (status != 0) {
+			this.fireOnError(new Exception("Failed to show the dlangui message box."));
+		}
 	}
 
 	static bool isSupported() {

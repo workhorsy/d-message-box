@@ -19,8 +19,8 @@
 
 	"preGenerateCommands" : [
 		"echo \"!!! pre d-message-box\"",
-		"cd $PACKAGE_DIR\\d-message-box-dlangui && dub build --arch=x86_64 --build=debug",
-		"cd $PACKAGE_DIR\\d-message-box-dlangui\\files_to_data && dub run --arch=x86_64 --build=debug",
+		"cd $PACKAGE_DIR\\d-message-box-dlangui && dub build --arch=x86_64 --build=%DUB_BUILD_TYPE%",
+		"cd $PACKAGE_DIR\\d-message-box-dlangui\\files_to_data && dub run --arch=x86_64 --build=%DUB_BUILD_TYPE%",
 	],
 	"postGenerateCommands" : [
 		"echo \"!!! post d-message-box\"",
