@@ -5,33 +5,20 @@ import std.stdio : stdout, stderr;
 import compressed_file : CompressedFile;
 
 CompressedFile EntryToCompressedFile(string name) {
-	import std.file : FileException, isSymlink, read;
+	import std.file : FileException, read;
 	import std.path : baseName;
-
-	version (Windows) { } else {
-		import std.file : readLink;
-	}
 	import std.zlib : compress;
 	import std.base64 : Base64;
 
-	bool is_symlink = isSymlink(name);
+	// Compress and base64 the file
 	string b64ed;
-
-	// If the file is normal, compress and base64 it
-	if (! is_symlink) {
-		ubyte[] file_data = cast(ubyte[]) read(name);
-		ubyte[] compressed = compress(file_data, 9);
-		b64ed = Base64.encode(compressed);
-	// If the file is a symlink, return the name of the file it points to
-	} else {
-		version (Windows) {} else {
-			b64ed = readLink(name);
-		}
-	}
+	ubyte[] file_data = cast(ubyte[]) read(name);
+	ubyte[] compressed = compress(file_data, 9);
+	b64ed = Base64.encode(compressed);
 
 	// Put the data into a Compressed File
 	name = baseName(name);
-	return CompressedFile(name, b64ed, is_symlink);
+	return CompressedFile(name, b64ed);
 }
 
 int run() {
@@ -86,7 +73,6 @@ int run() {
 		out_file.write("    {\r\n");
 		out_file.write("        \"%s\",\r\n".format(entry.name));
 		out_file.write("        \"%s\",\r\n".format(entry.data));
-		out_file.write("        %s\r\n".format(entry.is_symlink));
 		out_file.write("    },\r\n");
 	}
 	out_file.write("];\r\n");

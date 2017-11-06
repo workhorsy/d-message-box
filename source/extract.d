@@ -38,25 +38,23 @@ void extractFiles(string target_dir, immutable CompressedFile[] compressed_files
 			continue;
 		}
 
-		// If the entry is a symlink do nothing
-		if (! entry.is_symlink) {
-			stdout.writefln("Extracting: %s", full_name);
+		// Extract the file
+		stdout.writefln("Extracting: %s", full_name);
 
-			// Unbase64 and uncompress the data
-			ubyte[] unb64ed = Base64.decode(entry.data);
-			ubyte[] data = cast(ubyte[]) uncompress(unb64ed);
+		// Unbase64 and uncompress the data
+		ubyte[] unb64ed = Base64.decode(entry.data);
+		ubyte[] data = cast(ubyte[]) uncompress(unb64ed);
 
-			// Make the directory if it does not exist
-			string dir_name = dirName(full_name);
-			if (! exists(dir_name)) {
-				mkdirRecurse(dir_name);
-			}
-
-			// Write the data to a file
-			auto out_file = File(full_name, "wb");
-			out_file.write(cast(char[])data);
-			out_file.close();
+		// Make the directory if it does not exist
+		string dir_name = dirName(full_name);
+		if (! exists(dir_name)) {
+			mkdirRecurse(dir_name);
 		}
+
+		// Write the data to a file
+		auto out_file = File(full_name, "wb");
+		out_file.write(cast(char[])data);
+		out_file.close();
 	}
 
 	progress_cb(100);
