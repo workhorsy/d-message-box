@@ -1,20 +1,18 @@
 
 import std.stdio : stdout, stderr;
-
-
 import compressed_file : CompressedFile;
 
-CompressedFile EntryToCompressedFile(string name) {
+
+CompressedFile entryToCompressedFile(string name) {
 	import std.file : FileException, read;
 	import std.path : baseName;
 	import std.zlib : compress;
 	import std.base64 : Base64;
 
 	// Compress and base64 the file
-	string b64ed;
 	ubyte[] file_data = cast(ubyte[]) read(name);
 	ubyte[] compressed = compress(file_data, 9);
-	b64ed = Base64.encode(compressed);
+	string b64ed = Base64.encode(compressed);
 
 	// Put the data into a Compressed File
 	name = baseName(name);
@@ -41,7 +39,7 @@ int run() {
 	foreach (scan_entry ; dirs_to_scan) {
 		if (isFile(scan_entry)) {
 			stdout.writefln("Adding: %s", scan_entry);
-			compressed_files ~= EntryToCompressedFile(scan_entry);
+			compressed_files ~= entryToCompressedFile(scan_entry);
 		} else if (isDir(scan_entry)) {
 			string[] entries = dirEntries(scan_entry, SpanMode.depth)
 				.map!(n => n.name) // Get the file names only
@@ -52,7 +50,7 @@ int run() {
 			foreach (entry ; entries) {
 				entry = replace(entry, `\`, "/");
 				stdout.writefln("Adding: %s", entry);
-				compressed_files ~= EntryToCompressedFile(entry);
+				compressed_files ~= entryToCompressedFile(entry);
 			}
 		}
 	}
