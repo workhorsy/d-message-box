@@ -228,12 +228,17 @@ class MessageBox {
 		});
 	}
 
-	public static void cleanup() {
-		import std.file : exists, rmdirRecurse;
+	public static void cleanup()  {
+		import std.file : exists, rmdirRecurse, FileException;
+		import std.stdio : stderr;
 
 		// Remove the temporary directory
 		if (_temp_dir && exists(_temp_dir)) {
-			rmdirRecurse(_temp_dir);
+			try {
+				rmdirRecurse(_temp_dir);
+			} catch (FileException err) {
+				stderr.writefln(`Failed to remove the directory "%s"`, _temp_dir);
+			}
 		}
 	}
 
