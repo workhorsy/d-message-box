@@ -165,7 +165,7 @@ class MessageBox {
 	+/
 	this(string title, string message, IconType icon_type) {
 		if (MessageBoxDlangUI.isSupported()) {
-			_dialog = new MessageBoxDlangUI(title, message, icon_type);
+			_dialog = new MessageBoxDlangUI(_temp_dir, title, message, icon_type);
 		} else if (MessageBoxSDL.isSupported()) {
 			_dialog = new MessageBoxSDL(title, message, icon_type);
 /*
@@ -202,11 +202,38 @@ class MessageBox {
 	public static void init() {
 		import data : compressed_files;
 		import extract : extractFiles;
+		import std.file : tempDir, exists, mkdir;
+		import std.path : buildPath;
+		import std.algorithm : map;
+		import std.ascii : letters;
+		import std.random : uniform;
+		import std.range : iota, array;
+		import std.conv : to;
 
-		extractFiles(compressed_files, delegate(int percent) {
+		// Generate a random unused temporary directory name
+		do {
+			string dir_name = iota(10).map!((_) => letters[uniform(0, $)]).array.to!string;
+			_temp_dir = buildPath(tempDir(), dir_name);
+		} while(exists(_temp_dir));
+
+		// Create the directory
+		mkdir(_temp_dir);
+
+		// Extract the files into the directory
+		extractFiles(_temp_dir, compressed_files, delegate(int percent) {
 			//dialog.setPercent(percent);
 		});
 	}
 
+	public static void cleanup() {
+		import std.file : exists, rmdirRecurse;
+
+		// Remove the temporary directory
+		if (exists(_temp_dir)) {
+			rmdirRecurse(_temp_dir);
+		}
+	}
+
+	static string _temp_dir;
 	MessageBoxBase _dialog;
 }

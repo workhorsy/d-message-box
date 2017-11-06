@@ -10,18 +10,20 @@ import message_box : MessageBoxBase, IconType, use_log, is_sdl2_loadable;
 
 
 class MessageBoxDlangUI : MessageBoxBase {
-	this(string title, string message, IconType icon_type) {
+	this(string exe_dir, string title, string message, IconType icon_type) {
 		super(title, message, icon_type);
+		_exe_dir = exe_dir;
 	}
 
 	override void show() {
 		import std.process : pipeProcess, wait, Redirect;
 		import std.string : format;
 		import std.file : exists;
+		import std.path : buildPath;
 		import message_box_helpers : programPaths, logProgramOutput;
 
 		// Find the message box program
-		string path = "message_box_dlangui.exe";
+		string path = buildPath(_exe_dir, "message_box_dlangui.exe");
 		if (! exists(path)) {
 			this.fireOnError(new Exception("Failed to find message_box_dlangui.exe."));
 			return;
@@ -62,4 +64,6 @@ class MessageBoxDlangUI : MessageBoxBase {
 			return is_sdl2_loadable;
 		}
 	}
+
+	string _exe_dir;
 }

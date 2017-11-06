@@ -6,6 +6,7 @@ import message_box : MessageBox, IconType;
 
 int main(string[] args) {
 	MessageBox.init();
+	scope(exit) MessageBox.cleanup();
 
 	// Create the message box
 	auto dialog = new MessageBox("Party Time", "The roof is on fire!", IconType.Warning);

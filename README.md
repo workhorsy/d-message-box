@@ -12,7 +12,6 @@ it can find on your OS at runtime. It tries to use the following:
 
 # TODO
 
-* Make it extract the exe to a temp directory, and cleanup with a scope exit function
 * Move the code generating functions into the dlangui dub file
 * Move MessageBoxWin32 into its own process
 * Update the documentation example to be accurate too
