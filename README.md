@@ -12,6 +12,7 @@ it can find on your OS at runtime. It tries to use the following:
 
 # TODO
 
+* Make it work on Windows and Posix
 * Move the code generating functions into the dlangui dub file
 * Move MessageBoxWin32 into its own process
 * Update the documentation example to be accurate too
