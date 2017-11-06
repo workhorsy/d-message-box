@@ -164,6 +164,7 @@ class MessageBox {
 	 If it fails to find any programs or libraries to make a message box with.
 	+/
 	this(string title, string message, IconType icon_type) {
+		assertInitialized();
 		if (MessageBoxDlangUI.isSupported()) {
 			_dialog = new MessageBoxDlangUI(_temp_dir, title, message, icon_type);
 		} else if (MessageBoxSDL.isSupported()) {
@@ -189,6 +190,7 @@ class MessageBox {
 	 cb = The call back to fire when there is an error.
 	+/
 	void onError(void delegate(Throwable err) cb) {
+		assertInitialized();
 		_dialog._on_error_cb = cb;
 	}
 
@@ -196,6 +198,7 @@ class MessageBox {
 	Shows the message box. Will block until it is closed.
 	+/
 	void show() {
+		assertInitialized();
 		_dialog.show();
 	}
 
@@ -229,11 +232,18 @@ class MessageBox {
 		import std.file : exists, rmdirRecurse;
 
 		// Remove the temporary directory
-		if (exists(_temp_dir)) {
+		if (_temp_dir && exists(_temp_dir)) {
 			rmdirRecurse(_temp_dir);
 		}
 	}
 
-	static string _temp_dir;
+	private static void assertInitialized() {
+		// Just return if initialized
+		if (_temp_dir) return;
+
+		throw new Exception("MessageBox.init should be called before use.");
+	}
+
+	static string _temp_dir = null;
 	MessageBoxBase _dialog;
 }
