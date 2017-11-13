@@ -125,10 +125,15 @@ abstract class MessageBoxBase {
 	}
 
 	void fireOnError(Throwable err) {
+		// Remove the callback before use to prevent infinite recursion
 		auto old_cb = _on_error_cb;
 		_on_error_cb = null;
 
+		// Fire the callback
 		if (old_cb) old_cb(err);
+
+		// Restore the callback
+		_on_error_cb = old_cb;
 	}
 
 	void show();
