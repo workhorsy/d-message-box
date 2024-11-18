@@ -1,0 +1,26 @@
+name: Run all D Tests
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: Dub Tests
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+        dc: [dmd-latest, ldc-latest, gdc-12]
+        exclude:
+          - { os: windows-latest, dc: gdc-12 }
+          - { os: macOS-latest, dc: gdc-12 }
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install D compiler
+        uses: dlang-community/setup-dlang@v2
+        with:
+          compiler: ${{ matrix.dc }}
+          dub: latest
+
+      - name: Run tests
+        run: dub -q test
