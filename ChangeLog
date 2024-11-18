@@ -1,4 +1,7 @@
 
+* Release 0.4.0
+	* Fixed Bug #9: Make tests run without main for changes in dmd 2.090
+
 10/02/2017 Release 0.3.0
 	* Fixed Bug #6: DLangUI message box does not handle new lines
 

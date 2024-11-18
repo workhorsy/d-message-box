@@ -1,11 +1,12 @@
 
 
 
+unittest {
+	import BDD;
 
-
-import BDD;
-
-int main() {
-	return BDD.printResults();
+	describe("message_box",
+		it("Run an empty test", delegate() {
+			true.shouldEqual(true);
+		}),
+	);
 }
-
