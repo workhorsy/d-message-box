@@ -4,15 +4,18 @@ set -e
 
 VERSION="0.3.0"
 
+# Change dir to this scripts directory
+script_dir=$(dirname $0)
+cd $script_dir
+
+# Generate readme
 cd ..
 sed 's/$VERSION/'$VERSION'/g' tools/README.template.md > README.md
 
 # Generate documentation
 dub --build=docs
-rm -f -rf docs/$VERSION
 mkdir docs/$VERSION
 mv docs/message_box.html docs/$VERSION/index.html
-rm -f docs/*.html
 git add docs/$VERSION/
 
 # Create release
