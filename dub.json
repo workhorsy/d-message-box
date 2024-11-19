@@ -9,12 +9,12 @@
 	"license": "BSL-1.0",
 	"targetPath": "lib",
 	"targetType": "staticLibrary",
+	"subConfigurations": {
+		"dlangui": "minimal"
+	},
 
 	"configurations": [
 		{
-			"subConfigurations": {
-				"dlangui": "minimal"
-			},
 			"name": "default",
 			"targetName": "message_box",
 			"importPaths": ["source/"],
