@@ -13,6 +13,8 @@
 		"dlangui": "minimal"
 	},
 
+	"versions": ["EmbedStandardResources"],
+
 	"configurations": [
 		{
 			"name": "default",
